@@ -5,6 +5,7 @@ import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { getAllCart } from "../../services/cartService";
 import { useCart } from "../../context/CartContext";
+import { addressStatusAPI } from "../../services/addressService";
 
 
 interface CartItem {
@@ -24,6 +25,7 @@ const CartPage = () => {
   const { setCartCount } = useCart();
   setCartCount(cartItems.length);
 
+ 
   useEffect(() => {
     const fetchCartDetails = async () => {
       try {
