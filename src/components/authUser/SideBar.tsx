@@ -34,8 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const items: NavItem[] = [
-    { id: "Dashboard", label: "Dashboard", icon: Home, path: "/user/dashboard" },
-    { id: "Profile", label: "Profile", icon: User, path: "/user/dashboard/profile" },
+    { id: "Profile", label: "Profile", icon: User, path: "/user/dashboard" },
     { id: "Orders", label: "My Orders", icon: LinkIcon, path: "/user/dashboard/order" },
     { id: "Address", label: "My Address", icon: LinkIcon, path: "/user/dashboard/address" },
     { id: "Settings", label: "Settings", icon: Settings, dropdown: true },

@@ -9,7 +9,6 @@ import AboutPage from "../pages/About";
 import RestaurantsPage from "../pages/Restaurants";
 import CartPage from "../pages/authUser/CartPage";
 import DashboardLayout from "../layout/DashboardLayout";
-import Dashboard from "../pages/authUser/Dashboard/Dashboard";
 import Profile from "../pages/authUser/Dashboard/Profile";
 import Order from "../pages/authUser/Dashboard/Order";
 import Address from "../pages/authUser/Dashboard/Address";
@@ -65,10 +64,6 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Dashboard />,
-              },
-              {
-                path: "profile",
                 element: <Profile />,
               },
               {
