@@ -25,7 +25,23 @@ const CartPage = () => {
   const { setCartCount } = useCart();
   setCartCount(cartItems.length);
 
- 
+  // ******************** Address selected or not cheking function *********************************
+  // ** If not select any address show the select address button else show checkout button **
+
+  useEffect(() => {
+    const getAddressStatus = async () => {
+      try {
+        const response = await addressStatusAPI()
+        console.log(response, "===address status")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAddressStatus()
+  },[])
+
+  // ********************** End get cart funciton ************************
+
   useEffect(() => {
     const fetchCartDetails = async () => {
       try {
