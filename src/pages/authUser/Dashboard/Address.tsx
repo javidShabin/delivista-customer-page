@@ -6,13 +6,19 @@ import toast from "react-hot-toast";
 
 const Address = () => {
   const [addresses, setAddresses] = useState<AddressType[]>([]);
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null); // store selected address _id
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
 
   useEffect(() => {
     const getAllAddresses = async () => {
       try {
         const response = await axiosInstance.get<{ data: AddressType[] }>("/address/all-address");
-        setAddresses(response.data.data);
+        const data = response.data.data
+        setAddresses(data);
+        // Set the default address as selected
+        const defaultAddress = data.find((address) => address.isDefault);
+        if (defaultAddress) {
+          setSelectedAddressId(defaultAddress._id);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -20,10 +26,21 @@ const Address = () => {
     getAllAddresses();
   }, []);
 
-  const handleSelect = (id: string) => {
-    setSelectedAddress(id);
+  const onSelect = (addressId: string) => {
+    const getDe = async () => {
+      try {
+        const response = await axiosInstance.put(`/address/default-updating/${addressId}`);
+        const addressStatus = response.data.data.isDefault;
+        if (addressStatus) {
+          setSelectedAddressId(addressId); // set the selected address id
+        }
+        toast.success("Address selected");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDe();
   };
-
   const handleEdit = (id: string) => {
     console.log("Edit address:", id);
   };
@@ -41,7 +58,7 @@ const Address = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 rounded-xl shadow-sm border border-orange-100">
+    <div className="p-6 ">
       {/* Header with Add Button */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-orange-600">My Addresses</h1>
@@ -57,12 +74,10 @@ const Address = () => {
       {/* Address List */}
       <div className="grid sm:grid-cols-2 gap-4">
         {addresses.map((address) => (
+
           <div
             key={address._id}
-            className={`relative p-5 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer ${
-              selectedAddress === address._id ? "border-orange-500" : "border-orange-200"
-            }`}
-            onClick={() => handleSelect(address._id)}
+            className={`relative p-5 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer `}
           >
             {/* Edit & Delete Top Right */}
             <div className="absolute top-3 right-3 flex gap-2">
@@ -99,10 +114,16 @@ const Address = () => {
             </p>
             <p className="text-gray-600 text-sm">{address.phoneNumber}</p>
 
-            {/* Select Tick Bottom Right */}
-            {selectedAddress === address._id && (
-              <span className="absolute bottom-3 right-3 text-green-600 font-bold">✔</span>
-            )}
+
+            <button
+              onClick={() => onSelect(address._id)}
+              className={`absolute bottom-3 right-3 px-3 py-1 ${selectedAddressId === address._id ? "bg-green-600 hover:bg-green-700" : "bg-orange-600 hover:bg-orange-700"
+                } text-white text-sm rounded shadow transition`}
+            >
+             {selectedAddressId === address._id ? "selected" : "select"}
+            </button>
+
+
           </div>
         ))}
       </div>
