@@ -23,7 +23,7 @@ export default function SignupForm() {
     try {
       const payLoad = { ...data, role: "customer" };
       const response = await axiosInstance.post(
-        "/",
+        "/authentication/user-signup",
         payLoad
       );
       console.log(response, "data");

@@ -27,7 +27,7 @@ const AuthHeader = () => {
           res.data?.user?.profile || "/assets/images/default-user.png"
         );
       } catch {
-        setIsAuthenticated(false);
+        setIsAuthenticated(true);
       }
     };
     checkAuth();
