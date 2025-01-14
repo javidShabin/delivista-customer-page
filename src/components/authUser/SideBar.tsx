@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  Home,
   User,
   Link as LinkIcon,
   Settings,
