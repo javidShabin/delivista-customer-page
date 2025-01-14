@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { getAllCart } from "../../services/cartService";
 import { useCart } from "../../context/CartContext";
 import { addressStatusAPI } from "../../services/addressService";
+import { Link } from "react-router-dom";
 
 
 interface CartItem {
@@ -22,7 +23,11 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [addressSelected, isAddressSelected] = useState(false)
+
   const { setCartCount } = useCart();
+
+
   setCartCount(cartItems.length);
 
   // ******************** Address selected or not cheking function *********************************
@@ -32,13 +37,15 @@ const CartPage = () => {
     const getAddressStatus = async () => {
       try {
         const response = await addressStatusAPI()
-        console.log(response, "===address status")
+        const selected = response.data.data.isDefault
+        console.log(selected, "===address status")
+        selected ? isAddressSelected(true) : isAddressSelected(false)
       } catch (error) {
         console.log(error)
       }
     }
     getAddressStatus()
-  },[])
+  }, [])
 
   // ********************** End get cart funciton ************************
 
@@ -74,27 +81,27 @@ const CartPage = () => {
 
   // *************** Remove items from cart function ***********************
   // ***********************************************************************
- const removeItem = async (menuId: any) => {
-  try {
-    const response = await axiosInstance.delete("/cart/remove-item", {
-      data: { menuId },
-    });
+  const removeItem = async (menuId: any) => {
+    try {
+      const response = await axiosInstance.delete("/cart/remove-item", {
+        data: { menuId },
+      });
 
-    toast.success(response.data.message);
+      toast.success(response.data.message);
 
-    // Update local state based on response
-    const { items, totalPrice } = response.data.cart;
-    setCartItems(items);
-    setTotalPrice(totalPrice);
-  } catch (error: any) {
-    const errorMsg =
-      error.response?.data?.message ||
-      error.message ||
-      "Something went wrong";
-    toast.error(errorMsg);
-    console.error("Error deleting item:", error);
-  }
-};
+      // Update local state based on response
+      const { items, totalPrice } = response.data.cart;
+      setCartItems(items);
+      setTotalPrice(totalPrice);
+    } catch (error: any) {
+      const errorMsg =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      toast.error(errorMsg);
+      console.error("Error deleting item:", error);
+    }
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] px-4 md:px-8 py-10">
@@ -216,9 +223,16 @@ const CartPage = () => {
               );
             })()}
 
-            <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
-              Proceed to Checkout
-            </button>
+            {
+
+              addressSelected ? <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
+                Proceed to Checkout
+              </button> : <Link to={"/user/dashboard/address"}> <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
+                Select address
+              </button></Link>
+            }
+
+
 
             <p className="text-xs text-gray-500 text-center mt-3">
               🔒 Secure & Encrypted Checkout
