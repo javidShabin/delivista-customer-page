@@ -5,6 +5,9 @@ export default function OrderStatusPage() {
   const [currentStep, setCurrentStep] = useState(2);
   const [isVisible, setIsVisible] = useState(false);
 
+  console.log(isVisible)
+  
+
   const steps = [
     { label: "Order Confirmed", icon: <CheckCircle />, time: "2:30 PM" },
     { label: "Preparing", icon: <Utensils />, time: "2:35 PM" },
@@ -15,6 +18,7 @@ export default function OrderStatusPage() {
 
   useEffect(() => {
     setIsVisible(true);
+    setCurrentStep(3)
   }, []);
 
   const getStepColor = (idx: number) => {
