@@ -14,6 +14,7 @@ import Order from "../pages/authUser/Dashboard/Order";
 import Address from "../pages/authUser/Dashboard/Address";
 import ChangePassword from "../pages/authUser/Dashboard/ChangePassword";
 import PrivecyPolicy from "../pages/authUser/Dashboard/PrivecyPolicy";
+import OrderStatusPage from "../pages/authUser/Dashboard/OrderStatus";
 
 export const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
               {
                 path: "settings/privacy-policy",
                 element: <PrivecyPolicy />
+              },
+              {
+                path: "order-status",
+                element: <OrderStatusPage />
               }
             ],
           },
