@@ -8,7 +8,9 @@ import {
   KeyRound,
   Moon,
   Sun,
-  FileText
+  FileText,
+  ShoppingCart,
+  Hotel
 } from "lucide-react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
@@ -36,6 +38,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
     { id: "Profile", label: "Profile", icon: User, path: "/user/dashboard" },
     { id: "Orders", label: "My Orders", icon: LinkIcon, path: "/user/dashboard/order" },
     { id: "Address", label: "My Address", icon: LinkIcon, path: "/user/dashboard/address" },
+    { id: "Cart", label: "My Cart", icon: ShoppingCart, path: "/user/cart" },
+    { id: "Restaurant", label: "Restaurants", icon: Hotel, path: "/restaurant-page" },
     { id: "Settings", label: "Settings", icon: Settings, dropdown: true },
   ];
 
