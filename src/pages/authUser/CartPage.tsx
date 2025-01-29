@@ -63,19 +63,46 @@ const CartPage = () => {
       }
     };
     fetchCartDetails();
-  }, []);
+  }, [cartItems]);
 
-  const increaseQty = (index: number) => {
-    const updated = [...cartItems];
-    updated[index].quantity += 1;
-    setCartItems(updated);
+  const increaseQty = async (menuId:any) => {
+    try {
+      const response = await axiosInstance.put("/cart/update-cart", {
+        menuId,
+        action: "increment"
+      })
+      console.log(response)
+      
+      // Update local state after successful API call
+      if (response.data.success) {
+        const { items, totalPrice } = response.data.cart;
+        setCartItems(items);
+        setTotalPrice(totalPrice);
+        setCartCount(items.length);
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  const decreaseQty = (index: number) => {
-    const updated = [...cartItems];
-    if (updated[index].quantity > 1) {
-      updated[index].quantity -= 1;
-      setCartItems(updated);
+  const decreaseQty = async (menuId:any) => {
+    try {
+      const response = await axiosInstance.put("/cart/update-cart", {
+        menuId,
+        action: "decrement"
+      })
+      
+      // Update local state after successful API call
+      if (response.data.success) {
+        const { items, totalPrice } = response.data.cart;
+        setCartItems(items);
+        setTotalPrice(totalPrice);
+        setCartCount(items.length);
+      }
+      
+    } catch (error) {
+      console.log(error)
     }
   };
 
@@ -149,7 +176,7 @@ const CartPage = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full px-2 sm:px-3 py-1">
                         <button
-                          onClick={() => decreaseQty(index)}
+                          onClick={() => decreaseQty(item.menuId)}
                           className="p-1 hover:bg-gray-200 rounded-full transition"
                         >
                           <Minus size={14} />
@@ -158,7 +185,7 @@ const CartPage = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => increaseQty(index)}
+                          onClick={() => increaseQty(item.menuId)}
                           className="p-1 hover:bg-gray-200 rounded-full transition"
                         >
                           <Plus size={14} />
