@@ -13,6 +13,7 @@ type Inputs = {
   email: string;
   password: string;
   confirmPassword: string;
+  address: string
 };
 
 export default function SignupForm() {
@@ -141,6 +142,23 @@ export default function SignupForm() {
               {errors.confirmPassword && (
                 <p className="text-xs text-red-300 mt-1">
                   Please confirm your password
+                </p>
+              )}
+            </div>
+            {/* Address */}
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
+                Address
+              </label>
+              <input
+                type="text"
+                {...register("address", { required: true })}
+                placeholder="Enter address"
+                className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
+              />
+              {errors.password && (
+                <p className="text-xs text-red-300 mt-1">
+                  address is required
                 </p>
               )}
             </div>

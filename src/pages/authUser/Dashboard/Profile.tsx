@@ -10,6 +10,7 @@ const Profile = () => {
     email: string,
     role: string,
     phone: string,
+    address: string,
     createdAt: string,
     updatedAt: string
   }
@@ -20,6 +21,7 @@ const Profile = () => {
     const getProfileData = async () => {
       try {
         const response = await axiosInstance.get("/user/customer-profile");
+        console.log(response.data)
         setUserProfile(response.data.customer);
       } catch (error) {
         console.log(error);
@@ -63,7 +65,7 @@ const Profile = () => {
               <Phone size={16} /> {profile?.phone}
             </div>
             <div className="flex items-center gap-3 text-gray-600">
-              <MapPin size={16} /> San Francisco, USA
+              <MapPin size={16} /> {profile?.address}
             </div>
             <div className="flex items-center gap-3 text-gray-600">
               <Shield size={16} /> Verified Account
@@ -109,7 +111,7 @@ const Profile = () => {
               </label>
               <input
                 type="text"
-                defaultValue="San Francisco, USA"
+                defaultValue={profile?.address}
                 className="mt-1 w-full border border-gray-200 rounded-lg p-2 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
             </div>
