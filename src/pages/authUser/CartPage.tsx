@@ -26,9 +26,22 @@ const CartPage = () => {
   const [addressSelected, isAddressSelected] = useState(false)
 
   const { setCartCount } = useCart();
-
-
   setCartCount(cartItems.length);
+
+ // ********************* Cart item is 0 the call the remove cart API ***************************
+ useEffect(() => {
+  const removeCart = async () => {
+    try {
+      if (!loading && cartItems.length === 0) {   // ✅ run only after fetch
+        const response = await axiosInstance.delete("/cart/remove-cart");
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  removeCart();
+}, [cartItems, loading]);  
 
   // ******************** Address selected or not cheking function *********************************
   // ** If not select any address show the select address button else show checkout button **
@@ -65,14 +78,14 @@ const CartPage = () => {
     fetchCartDetails();
   }, [cartItems]);
 
-  const increaseQty = async (menuId:any) => {
+  const increaseQty = async (menuId: any) => {
     try {
       const response = await axiosInstance.put("/cart/update-cart", {
         menuId,
         action: "increment"
       })
       console.log(response)
-      
+
       // Update local state after successful API call
       if (response.data.success) {
         const { items, totalPrice } = response.data.cart;
@@ -80,19 +93,19 @@ const CartPage = () => {
         setTotalPrice(totalPrice);
         setCartCount(items.length);
       }
-      
+
     } catch (error) {
       console.log(error)
     }
   };
 
-  const decreaseQty = async (menuId:any) => {
+  const decreaseQty = async (menuId: any) => {
     try {
       const response = await axiosInstance.put("/cart/update-cart", {
         menuId,
         action: "decrement"
       })
-      
+
       // Update local state after successful API call
       if (response.data.success) {
         const { items, totalPrice } = response.data.cart;
@@ -100,7 +113,7 @@ const CartPage = () => {
         setTotalPrice(totalPrice);
         setCartCount(items.length);
       }
-      
+
     } catch (error) {
       console.log(error)
     }

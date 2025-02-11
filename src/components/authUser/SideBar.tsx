@@ -33,6 +33,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
+  // ************ Get user details from localstorage ********************
+  const stored = localStorage.getItem("userProfile");
+  const userDetails = stored ? JSON.parse(stored) : null;
+  // ******************************************************************
+
+
   const items: NavItem[] = [
     { id: "Profile", label: "Profile", icon: User, path: "/user/dashboard" },
     { id: "Orders", label: "My Orders", icon: LinkIcon, path: "/user/dashboard/order" },
@@ -63,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
 
   const handleLogout = async (): Promise<void> => {
     try {
-      await axiosInstance.delete("/auth/user-logout");
+      await axiosInstance.delete("/authentication/user-logout");
       toast.success("Logout success");
       navigate("/login-page");
     } catch (error) {
@@ -107,17 +113,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                     }
                   }}
                   className={`flex items-center gap-3 w-full text-sm rounded-lg p-2 transition-all
-                    ${
-                      isActive
-                        ? "bg-orange-100 text-orange-600 font-medium"
-                        : "text-gray-700 hover:bg-orange-50"
+                    ${isActive
+                      ? "bg-orange-100 text-orange-600 font-medium"
+                      : "text-gray-700 hover:bg-orange-50"
                     }
                   `}
                 >
                   <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-lg ${
-                      isActive ? "bg-orange-500 text-white" : "bg-orange-100 text-orange-600"
-                    }`}
+                    className={`flex items-center justify-center w-10 h-10 rounded-lg ${isActive ? "bg-orange-500 text-white" : "bg-orange-100 text-orange-600"
+                      }`}
                   >
                     <Icon size={16} />
                   </div>
@@ -135,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                 {/* Dropdown Menu */}
                 {it.dropdown && settingsOpen && (
                   <div className="ml-12 mt-1 flex flex-col gap-1">
-                    
+
                     <Link
                       to="/user/dashboard/settings/update-password"
                       onClick={() => handleNav(it)}
@@ -168,13 +172,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
       {/* Profile & Logout */}
       <div className="flex items-center gap-3 border-t border-orange-100 pt-4">
         <img
-          src={"/default-avatar.png"}
+          src={userDetails?.profile}
           alt="avatar"
           className="w-10 h-10 rounded-full border border-orange-200"
         />
         <div>
-          <div className="text-sm font-semibold">name</div>
-          <div className="text-xs text-gray-500">role</div>
+          <div className="text-sm font-semibold">{userDetails?.name}</div>
+          <div className="text-xs text-gray-500">{userDetails?.role}</div>
         </div>
         <button
           onClick={handleLogout}
