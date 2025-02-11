@@ -16,7 +16,7 @@ const Address = () => {
     city: '',
     state: '',
     pincode: '',
-    addressType: 'home',
+    addressType: 'Home',
     isDefault: false
   });
 
@@ -136,106 +136,105 @@ const Address = () => {
 
   return (
     <div className="p-6">
-             {/* Header with Add Button */}
-       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-         <h1 className="text-xl sm:text-2xl font-bold text-orange-600">My Addresses</h1>
-         <button 
-           onClick={() => setShowAddForm(true)}
-           className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg shadow hover:bg-orange-600 transition-all w-full sm:w-auto"
-         >
-           <Plus size={14} className="sm:w-4 sm:h-4" /> Add New
-         </button>
-       </div>
+      {/* Header with Add Button */}
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-orange-600">My Addresses</h1>
+        <button 
+          onClick={() => setShowAddForm(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg shadow hover:bg-orange-600 transition-all"
+        >
+          <Plus size={16} /> Add New
+        </button>
+      </div>
 
       <p className="text-gray-600 mb-6">
         Manage your saved addresses for faster checkout and accurate deliveries.
       </p>
 
-             {/* Address List */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-         {addresses.map((address) => (
-           <div
-             key={address._id}
-             className={`relative p-3 sm:p-5 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer`}
-           >
-             {/* Edit & Delete Top Right */}
-             <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex gap-1 sm:gap-2">
-               <button
-                 onClick={(e) => {
-                   e.stopPropagation();
-                   handleEdit(address._id);
-                 }}
-                 className="text-orange-500 hover:text-orange-600 p-1 rounded hover:bg-orange-50 transition-colors"
-               >
-                 <Edit size={14} className="sm:w-4 sm:h-4" />
-               </button>
-               <button
-                 onClick={(e) => {
-                   e.stopPropagation();
-                   handleDelete(address._id);
-                 }}
-                 className="text-red-500 hover:text-red-600 p-1 rounded hover:bg-red-50 transition-colors"
-               >
-                 <Trash2 size={14} className="sm:w-4 sm:h-4" />
-               </button>
-             </div>
+      {/* Address List */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        {addresses.map((address) => (
+          <div
+            key={address._id}
+            className={`relative p-5 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer `}
+          >
+            {/* Edit & Delete Top Right */}
+            <div className="absolute top-3 right-3 flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEdit(address._id);
+                }}
+                className="text-orange-500 hover:text-orange-600"
+              >
+                <Edit size={16} />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(address._id);
+                }}
+                className="text-red-500 hover:text-red-600"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
 
-                         <div className="flex items-center gap-2 sm:gap-3 mb-2">
-               <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg text-orange-600">
-                 <MapPin size={16} className="sm:w-[18px] sm:h-[18px]" />
-               </div>
-               <h2 className="font-semibold text-gray-800 text-sm sm:text-base">{address.addressType}</h2>
-             </div>
-             <p className="text-gray-700 font-medium text-sm sm:text-base mb-1">{address.fullName}</p>
-             <p className="text-gray-600 text-xs sm:text-sm mb-1">{address.address}</p>
-             <p className="text-gray-600 text-xs sm:text-sm mb-1">
-               {address.city}, {address.state}, {address.pincode}
-             </p>
-             <p className="text-gray-600 text-xs sm:text-sm mb-3">{address.phoneNumber}</p>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
+                <MapPin size={18} />
+              </div>
+              <h2 className="font-semibold text-gray-800">{address.addressType}</h2>
+            </div>
+            <p className="text-gray-700 font-medium">{address.fullName}</p>
+            <p className="text-gray-600 text-sm">{address.address}</p>
+            <p className="text-gray-600 text-sm">
+              {address.city}, {address.state}, {address.pincode}
+            </p>
+            <p className="text-gray-600 text-sm">{address.phoneNumber}</p>
 
-             <button
-               onClick={() => onSelect(address._id)}
-               className={`absolute bottom-2 sm:bottom-3 right-2 sm:right-3 px-2 sm:px-3 py-1 text-xs sm:text-sm rounded shadow transition ${
-                 selectedAddressId === address._id ? "bg-green-600 hover:bg-green-700" : "bg-orange-600 hover:bg-orange-700"
-               } text-white`}
-             >
-              {selectedAddressId === address._id ? "selected" : "select"}
-             </button>
+            <button
+              onClick={() => onSelect(address._id)}
+              className={`absolute bottom-3 right-3 px-3 py-1 ${selectedAddressId === address._id ? "bg-green-600 hover:bg-green-700" : "bg-orange-600 hover:bg-orange-700"
+                } text-white text-sm rounded shadow transition`}
+            >
+             {selectedAddressId === address._id ? "selected" : "select"}
+            </button>
           </div>
         ))}
       </div>
 
-                    {/* Add Address Modal */}
-       {showAddForm && (
-         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
-           <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto border border-white/20">
-             {/* Header */}
-             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
-               <h2 className="text-lg sm:text-xl font-bold text-gray-800">Add New Address</h2>
-               <button
-                 onClick={handleCancel}
-                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded hover:bg-gray-100"
-               >
-                 <X size={18} className="sm:w-5 sm:h-5" />
-               </button>
-             </div>
+      {/* Add Address Modal */}
+      {showAddForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-800">Add New Address</h2>
+              <button
+                onClick={handleCancel}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-                         {/* Form */}
-             <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                   Full Name *
-                 </label>
-                 <input
-                   type="text"
-                   name="fullName"
-                   value={formData.fullName}
-                   onChange={handleInputChange}
-                   required
-                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm sm:text-base"
-                   placeholder="Enter full name"
-                 />
-               </div>
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  placeholder="Enter full name"
+                />
+              </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -345,24 +344,24 @@ const Address = () => {
                 </label>
               </div>
 
-                             {/* Action Buttons */}
-               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
-                 <button
-                   type="button"
-                   onClick={handleCancel}
-                   disabled={isLoading}
-                   className="flex-1 px-3 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 text-sm sm:text-base"
-                 >
-                   Cancel
-                 </button>
-                 <button
-                   type="submit"
-                   disabled={isLoading}
-                   className="flex-1 px-3 sm:px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                 >
-                   {isLoading ? 'Creating...' : 'Create Address'}
-                 </button>
-               </div>
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  disabled={isLoading}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? 'Creating...' : 'Create Address'}
+                </button>
+              </div>
             </form>
           </div>
         </div>
