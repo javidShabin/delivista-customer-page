@@ -20,6 +20,8 @@ const UserLayout = () => {
     const checkAuthentication = async () => {
       try {
         const response = await checkUserAuth();
+        localStorage.setItem("userProfile", JSON.stringify(response))
+        console.log(response)
         setProfileUrl(response.profile)
         dispatch(saveUser(response));
       } catch (error) {
