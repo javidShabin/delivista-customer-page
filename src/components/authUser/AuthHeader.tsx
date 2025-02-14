@@ -10,6 +10,16 @@ type Props = {
 
 const AuthHeader = ({ profileUrl }: Props) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hideHeader, setHideHeader] = useState("fixed");
+
+  const dashbordPath = window.location.pathname.startsWith("/user/profile");
+  useEffect(() => {
+    if (dashbordPath) {
+      setHideHeader("hidden");
+    }else{
+      setHideHeader("fixed")
+    }
+  }, [dashbordPath]);
 
     const { cartCount } = useCart();
 
@@ -25,7 +35,7 @@ const AuthHeader = ({ profileUrl }: Props) => {
     <>
       {/* Header */}
       <header
-        className={`fixed top-0 w-full z-50 transition duration-300 ${
+        className={`${hideHeader} top-0 w-full z-50 transition duration-300 ${
           isScrolled ? "bg-[#ffffff70] shadow-md backdrop-blur-lg" : ""
         }`}
       >
