@@ -99,7 +99,7 @@ const AuthHeader = ({ profileUrl }: Props) => {
             </Link>
 
             {/* Profile Image */}
-            <Link to="/profile">
+            <Link to="/user/dashboard">
               <img
                 src={profileUrl}
                 alt="User Profile"

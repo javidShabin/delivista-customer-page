@@ -10,6 +10,7 @@ import SingleRestaurant from "../pages/SingleRestaurant";
 import AboutPage from "../pages/About";
 import RestaurantsPage from "../pages/Restaurants";
 import CartPage from "../pages/authUser/CartPage";
+import DashboardLayout from "../layout/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
           {
             path: "cart",
             element: <CartPage />
+          },
+          {
+            path:"dashboard",
+            element: <DashboardLayout />
           }
         ]
       }
