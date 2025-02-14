@@ -3,6 +3,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { getAllCart } from "../../services/cartService";
 
 
 interface CartItem {
@@ -23,7 +24,7 @@ const CartPage = () => {
   useEffect(() => {
     const fetchCartDetails = async () => {
       try {
-        const response = await axiosInstance("/cart/cart-items");
+        const response = await getAllCart();
         const { totalPrice, items } = response.data;
         setCartItems(items);
         setTotalPrice(totalPrice);
