@@ -10,16 +10,8 @@ type Props = {
 
 const AuthHeader = ({ profileUrl }: Props) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hideHeader, setHideHeader] = useState("fixed");
-
-  const dashbordPath = window.location.pathname.startsWith("/user/profile");
-  useEffect(() => {
-    if (dashbordPath) {
-      setHideHeader("hidden");
-    }else{
-      setHideHeader("fixed")
-    }
-  }, [dashbordPath]);
+    const dashbordPath = location.pathname.startsWith("/user/dashboard");
+  const hideHeader = dashbordPath ? "hidden" : "fixed";
 
     const { cartCount } = useCart();
 

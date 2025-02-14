@@ -11,6 +11,7 @@ import AboutPage from "../pages/About";
 import RestaurantsPage from "../pages/Restaurants";
 import CartPage from "../pages/authUser/CartPage";
 import DashboardLayout from "../layout/DashboardLayout";
+import Dashboard from "../pages/authUser/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +56,14 @@ export const router = createBrowserRouter([
           },
           {
             path:"dashboard",
-            element: <DashboardLayout />
+            element: <DashboardLayout />,
+            
+            children: [
+              {
+                index: true,
+                element: <Dashboard />
+              }
+            ]
           }
         ]
       }
