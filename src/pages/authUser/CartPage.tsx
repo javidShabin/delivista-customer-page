@@ -4,6 +4,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { getAllCart } from "../../services/cartService";
+import { useCart } from "../../context/CartContext";
 
 
 interface CartItem {
@@ -20,6 +21,8 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const { setCartCount } = useCart();
+  setCartCount(cartItems.length);
 
   useEffect(() => {
     const fetchCartDetails = async () => {
