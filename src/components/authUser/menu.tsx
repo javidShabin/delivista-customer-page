@@ -7,9 +7,11 @@ import {
   fetchAvailableMenus,
 } from "../../services/menuService";
 
-import { addToCartAPI } from "../../services/cartService";
+import { addToCartAPI, getAllCart } from "../../services/cartService";
 import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
+
+import { useCart } from "../../context/CartContext";
 
 interface MenuProps {
   restaurantId: string | undefined;
@@ -51,6 +53,23 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [tagFilter, setTagFilter] = useState("");
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [allCategories, setAllCategories] = useState<string[]>(["All"]);
+  const [cartDetails, setCartDetails] = useState(0);
+  const { setCartCount } = useCart();
+
+  // Get the cart count details
+  useEffect(() => {
+    const fetchCartDetails = async () => {
+      try {
+        const response = await getAllCart();
+        const { items } = response.data;
+        setCartDetails(items.length);
+        setCartCount(items.length); // ✅ update context here
+      } catch (error) {
+        console.error("Failed to fetch cart:", error);
+      }
+    };
+    fetchCartDetails();
+  }, [setCartCount]);
 
   useEffect(() => {
     if (!restaurantId) return;
@@ -68,14 +87,20 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         } else if (categoryFilter === "All") {
           response = await fetchAllMenus(restaurantId, page);
         } else {
-          response = await fetchMenusByCategory(categoryFilter, restaurantId, page);
+          response = await fetchMenusByCategory(
+            categoryFilter,
+            restaurantId,
+            page
+          );
         }
 
         const menus: MenuItem[] = response.data.data || response.data.menus;
         setMenuItems(menus);
         setTotalPages(response.data.totalPages || 1);
 
-        const categories = Array.from(new Set(menus.map((item) => item.category)));
+        const categories = Array.from(
+          new Set(menus.map((item) => item.category))
+        );
         setAllCategories(["All", ...categories]);
       } catch (error) {
         console.error("Fetch menu error:", error);
@@ -83,7 +108,14 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
     };
 
     fetchMenu();
-  }, [restaurantId, categoryFilter, search, page, tagFilter, showAvailableOnly]);
+  }, [
+    restaurantId,
+    categoryFilter,
+    search,
+    page,
+    tagFilter,
+    showAvailableOnly,
+  ]);
 
   const handleAddToCart = async (item: MenuItem) => {
     try {
@@ -106,6 +138,12 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
 
       const response = await addToCartAPI(payload);
       toast.success(response.data.message);
+
+      // ✅ re-fetch cart after adding
+      const res = await getAllCart();
+      setCartDetails(res.data.items.length);
+      setCartCount(res.data.items.length);
+
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to add to cart");
     }
@@ -129,7 +167,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
     <section className="py-10 px-4 md:px-10">
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">🍴 Menu Items</h2>
-        <p className="text-gray-500 text-md">Explore our delicious and freshly made menu!</p>
+        <p className="text-gray-500 text-md">
+          Explore our delicious and freshly made menu!
+        </p>
       </div>
 
       {/* Filters */}
@@ -169,13 +209,19 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           className="px-3 py-2 border border-gray-300 rounded-lg w-full md:w-40 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
         >
           <option value="">All Tags</option>
-          {["Spicy", "Popular", "New Arrival", "Vegan", "Healthy", "Sweet", "Chef's Special"].map(
-            (tag, i) => (
-              <option key={i} value={tag}>
-                {tag}
-              </option>
-            )
-          )}
+          {[
+            "Spicy",
+            "Popular",
+            "New Arrival",
+            "Vegan",
+            "Healthy",
+            "Sweet",
+            "Chef's Special",
+          ].map((tag, i) => (
+            <option key={i} value={tag}>
+              {tag}
+            </option>
+          ))}
         </select>
 
         <label className="flex items-center space-x-2 text-sm text-gray-700">
@@ -199,7 +245,11 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
             key={item._id}
             className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden relative"
           >
-            <img src={item.image} alt={item.productName} className="w-full h-36 object-cover" />
+            <img
+              src={item.image}
+              alt={item.productName}
+              className="w-full h-36 object-cover"
+            />
 
             <button
               onClick={() => toggleFavorite(item._id)}
@@ -224,12 +274,20 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
 
             <div className="p-3">
               <div className="flex justify-between items-center">
-                <h3 className="text-sm font-semibold text-gray-800">{item.productName}</h3>
-                <span className="text-orange-600 font-bold text-sm">₹{item.price}</span>
+                <h3 className="text-sm font-semibold text-gray-800">
+                  {item.productName}
+                </h3>
+                <span className="text-orange-600 font-bold text-sm">
+                  ₹{item.price}
+                </span>
               </div>
 
-              <p className="text-[11px] italic text-gray-500 mb-1">Category: {item.category}</p>
-              <p className="text-xs text-gray-600 mb-2 line-clamp-2">{item.description}</p>
+              <p className="text-[11px] italic text-gray-500 mb-1">
+                Category: {item.category}
+              </p>
+              <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                {item.description}
+              </p>
 
               <div className="flex flex-wrap gap-1 mb-2">
                 {item.tags.map((tag, idx) => (
@@ -242,7 +300,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
                 ))}
                 <span
                   className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                    item.isVeg ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                    item.isVeg
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
                   }`}
                 >
                   {item.isVeg ? "🌱 Veg" : "🍖 Non-Veg"}
