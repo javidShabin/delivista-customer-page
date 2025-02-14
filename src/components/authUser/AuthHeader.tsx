@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import logo from "../../assets/images/logo.png";
+import { useCart } from "../../context/CartContext";
 
 type Props = {
   profileUrl: string;
@@ -9,6 +10,8 @@ type Props = {
 
 const AuthHeader = ({ profileUrl }: Props) => {
   const [isScrolled, setIsScrolled] = useState(false);
+
+    const { cartCount } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +84,7 @@ const AuthHeader = ({ profileUrl }: Props) => {
             <Link to="/user/cart" className="relative group">
               <ShoppingCart className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                2
+                {cartCount}
               </span>
             </Link>
 
