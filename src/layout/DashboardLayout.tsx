@@ -16,7 +16,7 @@ const HamburgerIcon: React.FC<HamburgerIconProps> = ({ isOpen, toggle }) => (
     {[0, 1, 2].map((i) => (
       <span
         key={i}
-        className={`block h-1 w-8 rounded-full bg-orange-500 transition-all duration-300 ease-in-out
+        className={`block h-1 w-8 rounded-full ${isOpen ? "bg-white" : "bg-orange-500"} transition-all duration-300 ease-in-out
           ${
             isOpen
               ? i === 0
