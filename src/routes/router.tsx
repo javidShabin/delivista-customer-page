@@ -1,6 +1,4 @@
-import {
-  createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import UserLayout from "../layout/UserLayout";
 import Home from "../pages/Home";
 import SignupForm from "../pages/SignupForm";
@@ -12,6 +10,12 @@ import RestaurantsPage from "../pages/Restaurants";
 import CartPage from "../pages/authUser/CartPage";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/authUser/Dashboard/Dashboard";
+import Profile from "../pages/authUser/Dashboard/Profile";
+import Order from "../pages/authUser/Dashboard/Order";
+import Address from "../pages/authUser/Dashboard/Address";
+import EditeProfile from "../pages/authUser/Dashboard/EditeProfile";
+import ChangePassword from "../pages/authUser/Dashboard/ChangePassword";
+import PrivecyPolicy from "../pages/authUser/Dashboard/PrivecyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -21,23 +25,23 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "about-page",
-        element: <AboutPage />
+        element: <AboutPage />,
       },
       {
         path: "restaurant-page",
-        element: <RestaurantsPage />
+        element: <RestaurantsPage />,
       },
       {
         path: "signup-page",
-        element: <SignupForm />
+        element: <SignupForm />,
       },
       {
         path: "login-page",
-        element: <LoginForm />
+        element: <LoginForm />,
       },
 
       // Loggin-in user
@@ -48,26 +52,49 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "restaurant/:id",
-            element: <SingleRestaurant />
+            element: <SingleRestaurant />,
           },
           {
             path: "cart",
-            element: <CartPage />
+            element: <CartPage />,
           },
           {
-            path:"dashboard",
+            path: "dashboard",
             element: <DashboardLayout />,
-            
+
             children: [
               {
                 index: true,
-                element: <Dashboard />
+                element: <Dashboard />,
+              },
+              {
+                path: "profile",
+                element: <Profile />,
+              },
+              {
+                path: "order",
+                element: <Order />,
+              },
+              {
+                path: "address",
+                element: <Address />,
+              },
+              {
+                path: "settings/edit-profile",
+                element: <EditeProfile />
+              },
+              {
+                path: "settings/update-password",
+                element: <ChangePassword />
+              },
+              {
+                path: "settings/privacy-policy",
+                element: <PrivecyPolicy />
               }
-            ]
-          }
-        ]
-      }
-
-    ]
+            ],
+          },
+        ],
+      },
+    ],
   },
 ]);

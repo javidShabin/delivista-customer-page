@@ -135,14 +135,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                 {it.dropdown && settingsOpen && (
                   <div className="ml-12 mt-1 flex flex-col gap-1">
                     <Link
-                      to="/user/dashboard/edit-profile"
+                      to="/user/dashboard/settings/edit-profile"
                       onClick={() => handleNav(it)}
                       className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
                     >
                       <UserCog size={14} /> Edit Profile
                     </Link>
                     <Link
-                      to="/user/dashboard/change-password"
+                      to="/user/dashboard/settings/update-password"
                       onClick={() => handleNav(it)}
                       className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
                     >
@@ -156,7 +156,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                       {darkMode ? "Day Theme" : "Dark Theme"}
                     </button>
                     <Link
-                      to="/user/settings/privacy-policy"
+                      to="/user/dashboard/settings/privacy-policy"
                       onClick={() => handleNav(it)}
                       className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
                     >
