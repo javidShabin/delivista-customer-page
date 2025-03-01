@@ -118,3 +118,39 @@ h2 {
 }
 
 /* ***************************** CLose the hero section ******************************** */
+@keyframes float-slide-premium {
+  0% {
+    transform: translateX(-60px) translateY(0) rotate(-15deg) scale(0.9);
+    opacity: 0;
+  }
+  15% {
+    transform: translateX(-40px) translateY(-8px) rotate(10deg) scale(1);
+    opacity: 0.6;
+  }
+  35% {
+    transform: translateX(-20px) translateY(5px) rotate(-5deg) scale(1.05);
+    opacity: 0.9;
+  }
+  55% {
+    transform: translateX(10px) translateY(-4px) rotate(5deg) scale(0.95);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(25px) translateY(6px) rotate(-7deg) scale(1.02);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(50px) translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-slideRight {
+  animation: float-slide-premium 5s ease-in-out infinite;
+}
+
+.delay-0 { animation-delay: 0s; }
+.delay-1 { animation-delay: 0.7s; }
+.delay-2 { animation-delay: 1.4s; }
+.delay-3 { animation-delay: 2.1s; }
+.delay-4 { animation-delay: 2.8s; }

@@ -34,28 +34,28 @@ const AboutPage = () => {
         alt="Mint"
         width={50}
         height={50}
-        className="absolute top-10 right-10 animate-slideRight"
+        className="absolute top-10 right-10 animate-slideRight delay-0"
       />
       <img
         src={mintLeaf1}
         alt="Mint Leaf"
         width={50}
         height={50}
-        className="absolute bottom-10 left-10 animate-slideRight"
+        className="absolute bottom-10 left-10 animate-slideRight delay-1"
       />
       <img
         src={mintLeaf1}
         alt="Mint Decoration"
         width={60}
         height={60}
-        className="absolute top-[120px] left-[40px] animate-slideRight"
+        className="absolute top-[120px] left-[40px] animate-slideRight delay-3"
       />
       <img
         src={mintLeaf1}
         alt="Mint Decoration"
         width={60}
         height={60}
-        className="absolute bottom-[120px] right-[40px] animate-slideRight"
+        className="absolute bottom-[120px] right-[40px] animate-slideRight delay-4"
       />
 
       {/* Main Container */}
