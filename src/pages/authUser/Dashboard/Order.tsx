@@ -1,6 +1,7 @@
 import { Search, Filter, Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getAllOrders } from "../../../services/orderService";
+import { useNavigate } from "react-router-dom";
 
 // helper function for status style
 const getStatusStyle = (status: string) => {
@@ -21,6 +22,7 @@ const getStatusStyle = (status: string) => {
 const Order = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getAllOrdersList = async () => {
@@ -110,7 +112,7 @@ const Order = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="flex items-center gap-1 text-orange-600 hover:text-orange-700 text-sm font-medium">
+                    <button onClick={()=>{navigate(`/user/dashboard/order/${order._id}`)}} className="flex items-center gap-1 text-orange-600 hover:text-orange-700 text-sm font-medium">
                       <Eye size={14} /> View
                     </button>
                   </td>

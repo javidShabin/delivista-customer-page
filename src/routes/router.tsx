@@ -18,6 +18,7 @@ import OrderStatusPage from "../pages/authUser/Dashboard/OrderStatus";
 import Favoites from "../pages/authUser/Dashboard/Favoites";
 import { SuccessPage } from "../pages/authUser/successPage";
 import { CancelPage } from "../pages/authUser/cancelPage";
+import { SingleOrder } from "../components/authUser/SingleOrder";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ export const router = createBrowserRouter([
               {
                 path:"favorite",
                 element: <Favoites />
+              },
+              {
+                path:"order/:orderId",
+                element: <SingleOrder />
               }
             ],
           },
