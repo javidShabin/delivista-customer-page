@@ -69,18 +69,18 @@ export default function SignupForm() {
         <div className="relative z-10 w-full max-w-lg">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text 2xl font-bold text-gray-800 mb-2">Create Account</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
             <p className="text-gray-600">Join us and start your delicious journey</p>
           </div>
 
           {/* Signup Form */}
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Name Field */}
               <div>
-                                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Full Name
-                  </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Full Name
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <User size={20} className="text-gray-400" />
@@ -95,11 +95,11 @@ export default function SignupForm() {
                       }
                     })}
                     placeholder="Enter your full name"
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                   />
                 </div>
                 {errors.name && (
-                  <p className="text-sm text-red-500 mt-1 flex items-center">
+                  <p className="text-sm text-red-500 mt-2 flex items-center">
                     <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                     {errors.name.message}
                   </p>
@@ -110,7 +110,7 @@ export default function SignupForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Phone Field */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Phone Number
                   </label>
                   <div className="relative">
@@ -127,11 +127,11 @@ export default function SignupForm() {
                         }
                       })}
                       placeholder="Enter your phone number"
-                      className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                     />
                   </div>
                   {errors.phone && (
-                    <p className="text-sm text-red-500 mt-1 flex items-center">
+                    <p className="text-sm text-red-500 mt-2 flex items-center">
                       <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                       {errors.phone.message}
                     </p>
@@ -140,7 +140,7 @@ export default function SignupForm() {
 
                 {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Email Address
                   </label>
                   <div className="relative">
@@ -157,11 +157,11 @@ export default function SignupForm() {
                         }
                       })}
                       placeholder="Enter your email"
-                      className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-sm text-red-500 mt-1 flex items-center">
+                    <p className="text-sm text-red-500 mt-2 flex items-center">
                       <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                       {errors.email.message}
                     </p>
@@ -173,7 +173,7 @@ export default function SignupForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Password Field */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Password
                   </label>
                   <div className="relative">
@@ -190,7 +190,7 @@ export default function SignupForm() {
                         }
                       })}
                       placeholder="Create a strong password"
-                      className="w-full pl-10 pr-12 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                      className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                     />
                     <button
                       type="button"
@@ -205,7 +205,7 @@ export default function SignupForm() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-sm text-red-500 mt-1 flex items-center">
+                    <p className="text-sm text-red-500 mt-2 flex items-center">
                       <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                       {errors.password.message}
                     </p>
@@ -214,7 +214,7 @@ export default function SignupForm() {
 
                 {/* Confirm Password Field */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Confirm Password
                   </label>
                   <div className="relative">
@@ -228,7 +228,7 @@ export default function SignupForm() {
                         validate: value => value === password || "Passwords do not match"
                       })}
                       placeholder="Confirm your password"
-                      className="w-full pl-10 pr-12 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                      className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                     />
                     <button
                       type="button"
@@ -243,7 +243,7 @@ export default function SignupForm() {
                     </button>
                   </div>
                   {errors.confirmPassword && (
-                    <p className="text-sm text-red-500 mt-1 flex items-center">
+                    <p className="text-sm text-red-500 mt-2 flex items-center">
                       <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                       {errors.confirmPassword.message}
                     </p>
@@ -253,9 +253,9 @@ export default function SignupForm() {
 
               {/* Address Field */}
               <div>
-                                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Address
-                  </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Address
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <MapPin size={20} className="text-gray-400" />
@@ -269,12 +269,12 @@ export default function SignupForm() {
                         message: "Address must be at least 10 characters"
                       }
                     })}
-                                          placeholder="Enter your address"
-                      className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your address"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                   />
                 </div>
                 {errors.address && (
-                  <p className="text-sm text-red-500 mt-1 flex items-center">
+                  <p className="text-sm text-red-500 mt-2 flex items-center">
                     <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
                     {errors.address.message}
                   </p>
@@ -304,7 +304,7 @@ export default function SignupForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none flex justify-center items-center gap-2"
+                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none flex justify-center items-center gap-2"
               >
                 {loading ? (
                   <ClipLoader color="white" size={20} />
