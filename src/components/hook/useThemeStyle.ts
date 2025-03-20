@@ -28,8 +28,7 @@ export default function useThemeStyles() {
     card: {
       backgroundColor: theme === "dark" ? "#1e1e1e" : "#ffffff",
       color: theme === "dark" ? "#f5f5f5" : "#333333",
-      borderRadius: "8px",
-      padding: "1rem",
+      border: theme === "dark" ? "#ff9900" : "#0000",
       boxShadow:
         theme === "dark"
           ? "0 2px 6px rgba(0, 0, 0, 0.6)"
@@ -38,21 +37,14 @@ export default function useThemeStyles() {
     form: {
       backgroundColor: theme === "dark" ? "#1c1c1c" : "#ffffff",
       color: theme === "dark" ? "#e5e5e5" : "#333333",
-      padding: "1rem",
-      borderRadius: "6px",
       boxShadow:
         theme === "dark"
           ? "0 2px 4px rgba(0, 0, 0, 0.5)"
           : "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
     button: {
-      backgroundColor: theme === "dark" ? "#333333" : "#007bff",
+      backgroundColor: theme === "dark" ? "#333333" : "#fc911f",
       color: theme === "dark" ? "#f1f1f1" : "#ffffff",
-      padding: "0.5rem 1rem",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      transition: "background-color 0.3s ease",
     },
   };
 

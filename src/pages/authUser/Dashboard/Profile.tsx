@@ -21,7 +21,6 @@ const Profile = () => {
     const getProfileData = async () => {
       try {
         const response = await axiosInstance.get("/user/customer-profile");
-        console.log(response.data)
         setUserProfile(response.data.customer);
       } catch (error) {
         console.log(error);
