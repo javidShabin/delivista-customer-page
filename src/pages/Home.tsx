@@ -155,7 +155,7 @@ const Home: React.FC = () => {
               <img
                 src={banner}
                 alt="Delicious Food Banner"
-                className="relative z-10 opacity-90 w-full max-w-[300px] sm:max-w-[400px] md:max-w-[550px] lg:max-w-[600px] transform group-hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+                className="relative z-10 opacity-90 w-full max-w-[250px] sm:max-w-[400px] md:max-w-[550px] lg:max-w-[600px] transform group-hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
               />
               
               {/* Floating Elements Around Banner */}
