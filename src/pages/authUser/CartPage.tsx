@@ -27,9 +27,6 @@ const CartPage = () => {
   const [addressId, setAddressId] = useState("")
   const [sellerId, setSellerId] = useState("")
 
-  console.log(sellerId, "===")
-
-
   useEffect(()=>{setTotalPrice},[])
 
   const { setCartCount } = useCart();
@@ -92,7 +89,6 @@ const CartPage = () => {
         menuId,
         action: "increment"
       })
-      console.log(response)
 
       // Update local state after successful API call
       if (response.data.success) {
