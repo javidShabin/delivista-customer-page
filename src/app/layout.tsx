@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import { useEffect } from "react";
+import { axiosInstance } from "@/config/axiosInstance";
 
 
 export const metadata: Metadata = {
@@ -13,6 +15,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const checkUserAuth = async () => {
+    try {
+      const response = await axiosInstance({
+        method: "GET",
+        url: "/authentication/verify-auth"
+      })
+      console.log(response, "===reponse")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    checkUserAuth()
+  },[])
+
   return (
     <html lang="en">
       <body
