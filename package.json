@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.34.0",
+    "axios": "^1.10.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.519.0",
     "motion": "^12.18.1",

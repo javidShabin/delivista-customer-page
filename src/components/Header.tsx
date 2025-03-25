@@ -60,7 +60,7 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  href="/restaurant"
+                  href="/restaurant-page"
                   className="font-semibold py-1 px-3 bg-[#ffa100] text-white rounded-full shadow-lg hover:shadow-[#ffa100] transition duration-300"
                 >
                   Restaurants
