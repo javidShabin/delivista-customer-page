@@ -1,37 +1,17 @@
 import { Search, Filter, Eye } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllOrders } from "../../../services/orderService";
 
-const orders = [
-  { id: "#1234", date: "2025-08-10", total: "$150.00", status: "Delivered" },
-  { id: "#1235", date: "2025-08-11", total: "$89.99", status: "Pending" },
-  { id: "#1236", date: "2025-08-12", total: "$200.00", status: "Cancelled" },
-  { id: "#1237", date: "2025-08-14", total: "$49.50", status: "Shipped" },
-];
-
+// helper function for status style
 const getStatusStyle = (status: string) => {
-
-
-  useEffect(() => {
-    const getAllOrdersList = async () =>{
-      try {
-        const response = await getAllOrders()
-        console.log(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getAllOrdersList()
-  },[])
-
   switch (status) {
-    case "Delivered":
+    case "confirmed":
       return "bg-green-100 text-green-700";
-    case "Pending":
+    case "placed":
       return "bg-yellow-100 text-yellow-700";
-    case "Cancelled":
+    case "cancelled":
       return "bg-red-100 text-red-700";
-    case "Shipped":
+    case "delivered":
       return "bg-blue-100 text-blue-700";
     default:
       return "bg-gray-100 text-gray-700";
@@ -39,13 +19,32 @@ const getStatusStyle = (status: string) => {
 };
 
 const Order = () => {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getAllOrdersList = async () => {
+      try {
+        const response = await getAllOrders();
+        setOrders(response.data.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getAllOrdersList();
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
-          <p className="text-sm text-gray-500">Track and manage your past purchases</p>
+          <p className="text-sm text-gray-500">
+            Track and manage your past purchases
+          </p>
         </div>
       </div>
 
@@ -78,30 +77,46 @@ const Order = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr
-                key={order.id}
-                className="border-t border-gray-100 hover:bg-orange-50 transition-all"
-              >
-                <td className="px-6 py-4">{order.id}</td>
-                <td className="px-6 py-4">{order.date}</td>
-                <td className="px-6 py-4">{order.total}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyle(
-                      order.status
-                    )}`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <button className="flex items-center gap-1 text-orange-600 hover:text-orange-700 text-sm font-medium">
-                    <Eye size={14} /> View
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                  Loading orders...
                 </td>
               </tr>
-            ))}
+            ) : orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                  No orders found
+                </td>
+              </tr>
+            ) : (
+              orders.map((order) => (
+                <tr
+                  key={order._id}
+                  className="border-t border-gray-100 hover:bg-orange-50 transition-all"
+                >
+                  <td className="px-6 py-4">{order._id}</td>
+                  <td className="px-6 py-4">
+                    {new Date(order.updatedAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4">₹{order.totalAmount}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyle(
+                        order.orderStatus
+                      )}`}
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <button className="flex items-center gap-1 text-orange-600 hover:text-orange-700 text-sm font-medium">
+                      <Eye size={14} /> View
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
