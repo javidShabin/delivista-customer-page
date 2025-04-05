@@ -1,4 +1,6 @@
 import { Search, Filter, Eye } from "lucide-react";
+import { useEffect } from "react";
+import { getAllOrders } from "../../../services/orderService";
 
 const orders = [
   { id: "#1234", date: "2025-08-10", total: "$150.00", status: "Delivered" },
@@ -8,6 +10,20 @@ const orders = [
 ];
 
 const getStatusStyle = (status: string) => {
+
+
+  useEffect(() => {
+    const getAllOrdersList = async () =>{
+      try {
+        const response = await getAllOrders()
+        console.log(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllOrdersList()
+  },[])
+
   switch (status) {
     case "Delivered":
       return "bg-green-100 text-green-700";
