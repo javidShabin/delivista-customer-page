@@ -9,6 +9,7 @@ import AuthUser from "./protectedRoutes/AuthUser";
 import SingleRestaurant from "../pages/SingleRestaurant";
 import AboutPage from "../pages/About";
 import RestaurantsPage from "../pages/Restaurants";
+import CartPage from "../pages/authUser/CartPage";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
           {
             path: "restaurant/:id",
             element: <SingleRestaurant />
+          },
+          {
+            path: "cart",
+            element: <CartPage />
           }
         ]
       }

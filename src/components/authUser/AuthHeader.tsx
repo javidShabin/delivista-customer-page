@@ -78,7 +78,7 @@ const AuthHeader = ({ profileUrl }: Props) => {
           <div className="flex gap-4 lg:gap-10 items-center">
             
             {/* Cart Icon */}
-            <Link to="/cart" className="relative group">
+            <Link to="/user/cart" className="relative group">
               <ShoppingCart className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                 2
