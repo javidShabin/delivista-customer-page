@@ -7,6 +7,7 @@ import type { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, saveUser } from "../redux/features/user/userSlice";
 import AuthHeader from "../components/authUser/AuthHeader";
+import Footer from "../components/Footer";
 
 const UserLayout = () => {
   const [profileUrl, setProfileUrl] = useState("")
@@ -44,6 +45,7 @@ const UserLayout = () => {
     <>
       {isUserExist ? <AuthHeader profileUrl={profileUrl} /> : <UnAuthHeader />}
       <Outlet />
+      <Footer />
     </>
   );
 };
