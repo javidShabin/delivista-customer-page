@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, MessagesSquare } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 
 type Props = {
@@ -76,11 +76,7 @@ const AuthHeader = ({ profileUrl }: Props) => {
 
           {/* Help + Cart + Profile */}
           <div className="flex gap-4 lg:gap-10 items-center">
-            {/* Help Icon */}
-            <Link to="/support" className="relative group">
-              <MessagesSquare className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
-            </Link>
-
+            
             {/* Cart Icon */}
             <Link to="/cart" className="relative group">
               <ShoppingCart className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
