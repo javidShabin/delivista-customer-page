@@ -43,7 +43,7 @@ const Header = () => {
                   Home
                 </li>
               </Link>
-              <Link href={"/about"}>
+              <Link href={"/about-page"}>
                 <li className="font-semibold py-1 px-3 bg-[#ffa100] text-white rounded-full shadow-lg hover:shadow-[#ffa100] transition duration-300">
                   About
                 </li>
