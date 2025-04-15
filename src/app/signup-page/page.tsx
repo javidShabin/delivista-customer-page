@@ -1,5 +1,6 @@
 "use client";
 
+import { axiosInstance } from "@/config/axiosInstance";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -18,8 +19,17 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("Form submitted:", data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const payLoad = { ...data, role: "customer" };
+      const response = await axiosInstance.post(
+        "/authentication/user-signup",
+        payLoad
+      );
+      console.log(response, "data");
+    } catch (error) {
+      console.log(error, "eeerrrooor");
+    }
   };
 
   return (
