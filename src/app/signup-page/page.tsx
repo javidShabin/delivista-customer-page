@@ -18,7 +18,9 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("Form submitted:", data);
+  };
 
   return (
     <section
@@ -98,7 +100,7 @@ export default function SignupForm() {
             )}
           </div>
 
-          {/* Confirm Password */}
+          {/* Confirm Password (no validation match check) */}
           <div>
             <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
               Confirm Password
@@ -128,7 +130,7 @@ export default function SignupForm() {
           <p className="text-center text-white text-xs sm:text-sm mt-2">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href=""
               className="text-[#ffa100] font-semibold hover:underline transition"
             >
               Login

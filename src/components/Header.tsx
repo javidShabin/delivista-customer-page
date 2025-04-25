@@ -7,10 +7,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -26,7 +23,7 @@ const Header = () => {
         <div className="container mx-auto flex items-center justify-between px-6 md:px-10 py-1">
           {/* Logo */}
           <div className="logo">
-            <h1>
+            <Link href="/">
               <Image
                 src="/assets/images/logo.png"
                 alt="Zippyzag Logo"
@@ -35,13 +32,14 @@ const Header = () => {
                 className="w-[70px] lg:w-[80px] h-auto"
                 priority
               />
-            </h1>
+            </Link>
           </div>
 
           {/* Navigation Links */}
           <nav
             className="hidden md:block text-black"
             aria-label="Main Navigation"
+            role="navigation"
           >
             <ul className="flex items-center space-x-6">
               <li>
