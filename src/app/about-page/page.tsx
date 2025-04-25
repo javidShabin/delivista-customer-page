@@ -43,7 +43,7 @@ const AboutPage = () => {
             About <span className="text-orange-500">Us</span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We’re committed to delivering your favorite meals from top restaurants. 
+            We&apos;re committed to delivering your favorite meals from top restaurants. 
             Explore menus, track orders, and enjoy fast delivery — all at your fingertips.
           </p>
         </div>
@@ -84,7 +84,7 @@ const AboutPage = () => {
               Why choose <span className="text-orange-500">Us</span>
             </h2>
             <p className="text-gray-600">
-              We're more than just a delivery service. We connect people with their 
+              We&apos;re more than just a delivery service. We connect people with their 
               favorite meals, ensure timely service, and partner with the best restaurants 
               to bring you quality food — every time.
             </p>
