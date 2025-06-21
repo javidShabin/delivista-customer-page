@@ -3,7 +3,23 @@ import React from "react";
 
 const AboutPage = () => {
   return (
-    <section className="bg-white py-16 h-screen">
+    <section className="bg-white py-16 h-screen relative">
+        <img
+          src="/assets/images/mint.png"
+          className="w-[50px] absolute top-20 sm:top-20 right-16  animate-slideRight"
+        />
+        <img
+          src="/assets/images/mint1.png"
+          className="w-[50px] absolute bottom-20 left-10 animate-slideRight"
+        />
+        <img
+          src="/assets/images/mint1.png"
+          className="w-[60px] absolute top-28 left-90 animate-slideRight"
+        />
+        <img
+          src="/assets/images/mint1.png"
+          className="w-[60px] absolute bottom-50 right-90 animate-slideRight"
+        />
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-4">
@@ -20,7 +36,7 @@ const AboutPage = () => {
           {/* Custom grid design */}
           <div className="grid grid-cols-3 grid-rows-2 gap-8 w-full max-w-4xl">
             {/* Card 1 */}
-            <div className="col-span-1 row-span-1rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
+            <div className="col-span-1 row-span-1 rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
             {/* Card 2 */}
             <div className="col-span-2 row-span-1 rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
             {/* Card 3 */}
