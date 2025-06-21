@@ -15,7 +15,6 @@ const AboutPage = () => {
             accusamus voluptatem soluta deserunt ea culpa quis.
           </p>
         </div>
-
         <div className="grid"></div>
         <div>
           <h2>
