@@ -12,7 +12,7 @@ export default function Home() {
       />
       <img
         src="/assets/images/tomato.png"
-        className="w-[50px] sm:w-[80px] absolute bottom-44 right-28 sm:right-80 animate-slideRight"
+        className="w-[50px] sm:w-[80px] absolute bottom-44 right-28 sm:bottom-10 sm:right-80 animate-slideRight"
       />
       <img
         src="/assets/images/mint1.png"
