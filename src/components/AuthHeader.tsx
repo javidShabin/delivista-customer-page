@@ -8,7 +8,9 @@ import { axiosInstance } from "@/config/axiosInstance";
 const AuthHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [profileImage, setProfileImage] = useState("/assets/images/default-user.png");
+  const [profileImage, setProfileImage] = useState(
+    "/assets/images/default-user.png"
+  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -21,8 +23,10 @@ const AuthHeader = () => {
       try {
         const res = await axiosInstance.get("/authentication/verify-auth");
         setIsAuthenticated(true);
-        setProfileImage(res.data?.user?.profile || "/assets/images/default-user.png");
-      } catch (error) {
+        setProfileImage(
+          res.data?.user?.profile || "/assets/images/default-user.png"
+        );
+      } catch {
         setIsAuthenticated(false);
       }
     };
@@ -116,12 +120,18 @@ const AuthHeader = () => {
             </Link>
           </li>
           <li>
-            <Link href="/about-page" className="hover:text-[#ffa100] transition">
+            <Link
+              href="/about-page"
+              className="hover:text-[#ffa100] transition"
+            >
               About
             </Link>
           </li>
           <li>
-            <Link href="/restaurant-page" className="hover:text-[#ffa100] transition">
+            <Link
+              href="/restaurant-page"
+              className="hover:text-[#ffa100] transition"
+            >
               Restaurants
             </Link>
           </li>
