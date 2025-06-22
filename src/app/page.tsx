@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import AboutPage from "./about-page/page";
 
 export default function Home() {
