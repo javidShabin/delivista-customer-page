@@ -43,7 +43,7 @@ const AboutPage = () => {
             About <span className="text-orange-500">Us</span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We&apos;re committed to delivering your favorite meals from top restaurants. 
+            We&apos;re  committed to delivering your favorite meals from top restaurants. 
             Explore menus, track orders, and enjoy fast delivery — all at your fingertips.
           </p>
         </div>
