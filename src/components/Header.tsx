@@ -31,6 +31,7 @@ const Header = () => {
               <img
                 src="/assets/images/logo.png"
                 className="w-[70px] lg:w-[80px]"
+                alt="logo"
               />
             </h1>
           </div>
