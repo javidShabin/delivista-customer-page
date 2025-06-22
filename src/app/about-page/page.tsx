@@ -3,7 +3,7 @@ import React from "react";
 
 const AboutPage = () => {
   return (
-    <section className="bg-white py-16 min-h-screen relative overflow-hidden">
+    <section className="bg-white py-16 min-h-[95vh] relative overflow-hidden">
       {/* Decorative Images */}
       <img
         src="/assets/images/mint.png"
@@ -44,10 +44,10 @@ const AboutPage = () => {
           {/* Feature Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
             {[
-              { src: "/assets/images/restaurant.png", title: "Restaurant" },
-              { src: "/assets/images/menu.png", title: "Menu" },
-              { src: "/assets/images/order.png", title: "Order" },
-              { src: "/assets/images/delivery.png", title: "Delivery" },
+              { src: "/assets/images/restaurant.png", title: "select Restaurant" },
+              { src: "/assets/images/menu.png", title: "Select Menu" },
+              { src: "/assets/images/order.png", title: "Place Order" },
+              { src: "/assets/images/delivery.png", title: "Wait for Delivery" },
             ].map((item, index) => (
               <div
                 key={index}
