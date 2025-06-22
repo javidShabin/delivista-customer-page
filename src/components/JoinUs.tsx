@@ -3,11 +3,11 @@ import React from "react";
 
 const JoinUs = () => {
   return (
-    <section className="w-full flex justify-center items-center min-h-screen px-4">
+    <section className="w-full flex justify-center items-center min-h-screen sm:min-h-[90vh] px-4">
       <div className="container w-full max-w-6xl">
         {/* Text Section */}
         <div>
-          <h1 className="text-4xl font-bold mb-5 text-center">
+          <h1 className="text-3xl font-bold mb-4 text-center">
             Join With <span className="text-orange-500">Us</span>
           </h1>
           <p className="text-center md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
