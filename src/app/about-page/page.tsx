@@ -43,8 +43,9 @@ const AboutPage = () => {
             About <span className="text-orange-500">Us</span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We&apos;re  committed to delivering your favorite meals from top restaurants. 
-            Explore menus, track orders, and enjoy fast delivery — all at your fingertips.
+            We&apos;re committed to delivering your favorite meals from top
+            restaurants. Explore menus, track orders, and enjoy fast delivery —
+            all at your fingertips.
           </p>
         </div>
 
@@ -53,10 +54,16 @@ const AboutPage = () => {
           {/* Feature Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
             {[
-              { src: "/assets/images/restaurant.png", title: "Select Restaurant" },
+              {
+                src: "/assets/images/restaurant.png",
+                title: "Select Restaurant",
+              },
               { src: "/assets/images/menu.png", title: "Select Menu" },
               { src: "/assets/images/order.png", title: "Place Order" },
-              { src: "/assets/images/delivery.png", title: "Wait for Delivery" },
+              {
+                src: "/assets/images/delivery.png",
+                title: "Wait for Delivery",
+              },
             ].map((item, index) => (
               <div
                 key={index}
@@ -84,9 +91,9 @@ const AboutPage = () => {
               Why choose <span className="text-orange-500">Us</span>
             </h2>
             <p className="text-gray-600">
-              We&apos;re more than just a delivery service. We connect people with their 
-              favorite meals, ensure timely service, and partner with the best restaurants 
-              to bring you quality food — every time.
+              We&apos;re more than just a delivery service. We connect people
+              with their favorite meals, ensure timely service, and partner with
+              the best restaurants to bring you quality food — every time.
             </p>
           </div>
         </div>
