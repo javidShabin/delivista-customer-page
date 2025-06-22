@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import AboutPage from "./about-page/page";
+import JoinUs from "@/components/JoinUs";
 
 export default function Home() {
   return (
@@ -87,6 +88,8 @@ export default function Home() {
 
       {/* About Section */}
       <AboutPage />
+      {/* Join Us Section */}
+      <JoinUs />
     </>
   );
 }
