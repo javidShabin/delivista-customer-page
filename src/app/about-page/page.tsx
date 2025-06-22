@@ -3,57 +3,79 @@ import React from "react";
 
 const AboutPage = () => {
   return (
-    <section className="bg-white py-16 h-screen relative">
-        <img
-          src="/assets/images/mint.png"
-          className="w-[50px] absolute top-20 sm:top-20 right-16  animate-slideRight"
-        />
-        <img
-          src="/assets/images/mint1.png"
-          className="w-[50px] absolute bottom-20 left-10 animate-slideRight"
-        />
-        <img
-          src="/assets/images/mint1.png"
-          className="w-[60px] absolute top-28 left-90 animate-slideRight"
-        />
-        <img
-          src="/assets/images/mint1.png"
-          className="w-[60px] absolute bottom-50 right-90 animate-slideRight"
-        />
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="bg-white py-16 min-h-screen relative overflow-hidden">
+      {/* Decorative Images */}
+      <img
+        src="/assets/images/mint.png"
+        alt="mint"
+        className="w-[50px] absolute top-10 right-10 animate-slideRight"
+      />
+      <img
+        src="/assets/images/mint1.png"
+        alt="mint1"
+        className="w-[50px] absolute bottom-10 left-10 animate-slideRight"
+      />
+      <img
+        src="/assets/images/mint1.png"
+        alt="mint1"
+        className="w-[60px] absolute top-[120px] left-[40px] animate-slideRight"
+      />
+      <img
+        src="/assets/images/mint1.png"
+        alt="mint1"
+        className="w-[60px] absolute bottom-[120px] right-[40px] animate-slideRight"
+      />
+
+      {/* Main Container */}
+      <div className="max-w-6xl mx-auto px-6 z-10 relative">
+        {/* Header Section */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-4">
             About <span className="text-orange-500">Us</span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-            maxime illo esse perferendis magnam, nostrum, hic voluptate
-            accusamus voluptatem soluta deserunt ea culpa quis.
+            We’re committed to delivering your favorite meals from top restaurants. 
+            Explore menus, track orders, and enjoy fast delivery — all at your fingertips.
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-          {/* Custom grid design */}
-          <div className="grid grid-cols-3 grid-rows-2 gap-8 w-full max-w-4xl">
-            {/* Card 1 */}
-            <div className="col-span-1 row-span-1 rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
-            {/* Card 2 */}
-            <div className="col-span-2 row-span-1 rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
-            {/* Card 3 */}
-            <div className="col-span-2 row-span-1 rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
-            {/* Card 4 */}
-            <div className="rounded-xl shadow-lg h-44 flex items-start justify-start"></div>
+        {/* Grid + Info Section */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+          {/* Feature Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
+            {[
+              { src: "/assets/images/restaurant.png", title: "Restaurant" },
+              { src: "/assets/images/menu.png", title: "Menu" },
+              { src: "/assets/images/order.png", title: "Order" },
+              { src: "/assets/images/delivery.png", title: "Delivery" },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center justify-center p-6 h-48 rounded-2xl bg-white border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 group hover:bg-amber-50"
+              >
+                <div className="bg-orange-100 rounded-full p-4 group-hover:scale-110 transition-transform duration-300">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-12 h-12 object-contain"
+                  />
+                </div>
+                <p className="mt-4 text-base font-semibold text-gray-800 group-hover:text-amber-600">
+                  {item.title}
+                </p>
+              </div>
+            ))}
           </div>
 
-          {/* Why choose us */}
-          <div className="max-w-md">
+          {/* Why Choose Us */}
+          <div className="max-w-md text-center lg:text-left">
             <h2 className="text-2xl font-bold mb-4">
               Why choose <span className="text-orange-500">Us</span>
             </h2>
             <p className="text-gray-600">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-              laudantium nesciunt excepturi facere, modi earum, neque veritatis
-              aliquid reiciendis placeat doloremque vero quibusdam adipisci?
+              We're more than just a delivery service. We connect people with their 
+              favorite meals, ensure timely service, and partner with the best restaurants 
+              to bring you quality food — every time.
             </p>
           </div>
         </div>
