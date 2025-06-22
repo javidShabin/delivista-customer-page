@@ -1,29 +1,38 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 
 const AboutPage = () => {
   return (
     <section className="bg-white py-16 min-h-[95vh] relative overflow-hidden">
       {/* Decorative Images */}
-      <img
+      <Image
         src="/assets/images/mint.png"
-        alt="mint"
-        className="w-[50px] absolute top-10 right-10 animate-slideRight"
+        alt="Mint"
+        width={50}
+        height={50}
+        className="absolute top-10 right-10 animate-slideRight"
       />
-      <img
+      <Image
         src="/assets/images/mint1.png"
-        alt="mint1"
-        className="w-[50px] absolute bottom-10 left-10 animate-slideRight"
+        alt="Mint Leaf"
+        width={50}
+        height={50}
+        className="absolute bottom-10 left-10 animate-slideRight"
       />
-      <img
+      <Image
         src="/assets/images/mint1.png"
-        alt="mint1"
-        className="w-[60px] absolute top-[120px] left-[40px] animate-slideRight"
+        alt="Mint Decoration"
+        width={60}
+        height={60}
+        className="absolute top-[120px] left-[40px] animate-slideRight"
       />
-      <img
+      <Image
         src="/assets/images/mint1.png"
-        alt="mint1"
-        className="w-[60px] absolute bottom-[120px] right-[40px] animate-slideRight"
+        alt="Mint Decoration"
+        width={60}
+        height={60}
+        className="absolute bottom-[120px] right-[40px] animate-slideRight"
       />
 
       {/* Main Container */}
@@ -44,7 +53,7 @@ const AboutPage = () => {
           {/* Feature Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
             {[
-              { src: "/assets/images/restaurant.png", title: "select Restaurant" },
+              { src: "/assets/images/restaurant.png", title: "Select Restaurant" },
               { src: "/assets/images/menu.png", title: "Select Menu" },
               { src: "/assets/images/order.png", title: "Place Order" },
               { src: "/assets/images/delivery.png", title: "Wait for Delivery" },
@@ -54,9 +63,11 @@ const AboutPage = () => {
                 className="flex flex-col items-center justify-center p-6 h-48 rounded-2xl bg-white border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 group hover:bg-amber-50"
               >
                 <div className="bg-orange-100 rounded-full p-4 group-hover:scale-110 transition-transform duration-300">
-                  <img
+                  <Image
                     src={item.src}
                     alt={item.title}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 object-contain"
                   />
                 </div>

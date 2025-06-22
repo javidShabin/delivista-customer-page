@@ -10,34 +10,46 @@ export default function Home() {
         style={{ backgroundImage: `url("/assets/images/hero.png")` }}
       >
         {/* Floating decorations */}
-        <img
+        <Image
           src="/assets/images/mint.png"
           alt="Mint Leaf"
+          width={50}
+          height={50}
           className="w-[50px] sm:w-[70px] absolute top-28 sm:top-20 right-16 sm:right-56 animate-slideRight"
         />
-        <img
+        <Image
           src="/assets/images/tomato.png"
           alt="Tomato"
+          width={50}
+          height={50}
           className="w-[50px] sm:w-[70px] absolute bottom-44 right-28 sm:bottom-10 sm:right-80 animate-slideRight"
         />
-        <img
+        <Image
           src="/assets/images/mint1.png"
-          alt="Mint"
+          alt="Mint Leaf"
+          width={70}
+          height={70}
           className="w-[70px] sm:w-[100px] absolute bottom-32 left-20 sm:left-80 animate-slideRight"
         />
-        <img
+        <Image
           src="/assets/images/tomato1.png"
-          alt="Tomato"
+          alt="Tomato Slice"
+          width={90}
+          height={90}
           className="w-[90px] sm:w-[120px] absolute top-5 sm:top-10 left-14 sm:left-56 animate-slideRight"
         />
-        <img
+        <Image
           src="/assets/images/chilly.png"
           alt="Chilly"
+          width={70}
+          height={70}
           className="w-[70px] sm:w-[90px] absolute bottom-20 sm:bottom-60 right-10 animate-slideRight"
         />
-        <img
+        <Image
           src="/assets/images/chilly1.png"
-          alt="Chilly"
+          alt="Chilly Decoration"
+          width={90}
+          height={90}
           className="w-[90px] sm:w-[100px] absolute bottom-[400px] sm:bottom-60 left-0 animate-slideRight"
         />
 
