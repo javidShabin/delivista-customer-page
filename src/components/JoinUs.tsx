@@ -3,7 +3,7 @@ import React from "react";
 
 const JoinUs = () => {
   return (
-    <section className="w-full flex justify-center items-center min-h-screen sm:min-h-[90vh] px-4">
+    <section className="w-full flex justify-center bg-[#f8f9fb] items-center min-h-screen sm:min-h-[90vh] px-4">
       <div className="container w-full max-w-6xl">
         {/* Text Section */}
         <div>

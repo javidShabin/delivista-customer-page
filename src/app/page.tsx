@@ -2,6 +2,7 @@
 import Image from "next/image";
 import AboutPage from "./about-page/page";
 import JoinUs from "@/components/JoinUs";
+import RestaurantsPage from "./restaurant-page/page";
 
 export default function Home() {
   return (
@@ -90,6 +91,8 @@ export default function Home() {
       <AboutPage />
       {/* Join Us Section */}
       <JoinUs />
+      {/* Restaurant section */}
+      <RestaurantsPage />
     </>
   );
 }
