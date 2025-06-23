@@ -27,7 +27,7 @@ const RestaurantsPage = () => {
 
   const fetchRestaurants = async (page: number) => {
     try {
-      const response = await axiosInstance.get(`/restaurant/get-all-restaurants?page=${page}&limit=8`);
+      const response = await axiosInstance.get(`/restaurant/verified-restaurants?page=${page}&limit=8`);
       setRestDetails(response.data.restaurants || []);
       setTotalPages(response.data.totalPages);
     } catch (error) {
