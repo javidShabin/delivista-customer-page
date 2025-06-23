@@ -12,9 +12,9 @@ const JoinUs = () => {
           </h1>
           <p className="text-center md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
             Join us and be part of an exciting journey toward innovation and
-            growth. Whether you're a business looking to expand your reach or an
+            growth. Whether you&apos;re a business looking to expand your reach or an
             individual seeking to explore new opportunities, we offer a platform
-            designed to empower and inspire. Let's work together to create
+            designed to empower and inspire. Let&apos;s work together to create
             meaningful connections and achieve greater success.
           </p>
         </div>
