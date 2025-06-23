@@ -22,18 +22,28 @@ interface Restaurant {
 
 const RestaurantsPage = () => {
   const [resDetails, setRestDetails] = useState<Restaurant[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchRestaurants = async (page: number) => {
+    try {
+      const response = await axiosInstance.get(`/restaurant/get-all-restaurants?page=${page}&limit=8`);
+      setRestDetails(response.data.restaurants || []);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const getRestaurants = async () => {
-      try {
-        const response = await axiosInstance.get("/restaurant/get-all-restaurants");
-        setRestDetails(response.data.restaurants || []);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getRestaurants();
-  }, []);
+    fetchRestaurants(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <section className="min-h-screen bg-[#f8f9fb] py-9 md:py-3 px-4">
@@ -42,6 +52,7 @@ const RestaurantsPage = () => {
           Discover Top <span className="text-orange-400"> Restaurants</span>
         </h1>
 
+        {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {resDetails.map((restaurant) => (
             <div
@@ -62,18 +73,15 @@ const RestaurantsPage = () => {
                   <div className="text-right text-xs text-gray-500 space-y-0.5 leading-tight">
                     <p>📞 {restaurant.phone}</p>
                     <p>📍 {restaurant.pinCode}</p>
-                     <p className="text-xs text-gray-500">
-                  🍽️{" "}
-                  <span className="text-gray-700 font-medium">
-                    {restaurant.cuisine.join(", ")}
-                  </span>
-                </p>
+                    <p className="text-xs text-gray-500">
+                      🍽️{" "}
+                      <span className="text-gray-700 font-medium">
+                        {restaurant.cuisine.join(", ")}
+                      </span>
+                    </p>
                   </div>
                 </div>
-
                 <p className="text-xs text-gray-600 truncate">{restaurant.address}</p>
-
-               
 
                 <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Clock className="w-4 h-4" />
@@ -106,6 +114,39 @@ const RestaurantsPage = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="flex flex-wrap items-center justify-center gap-2 md:mt-10 mb-5 md:mb-0 mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-1 text-sm border rounded ${
+                currentPage === index + 1
+                  ? "bg-orange-400 text-white"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </section>
