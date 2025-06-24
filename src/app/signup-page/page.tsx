@@ -3,6 +3,8 @@
 import { axiosInstance } from "@/config/axiosInstance";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { ClipLoader } from "react-spinners";
+import { useState } from "react";
 
 type Inputs = {
   name: string;
@@ -19,7 +21,10 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     try {
       const payLoad = { ...data, role: "customer" };
       const response = await axiosInstance.post(
@@ -28,7 +33,9 @@ export default function SignupForm() {
       );
       console.log(response, "data");
     } catch (error) {
-      console.log(error, "eeerrrooor");
+      console.log(error, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,7 +117,7 @@ export default function SignupForm() {
             )}
           </div>
 
-          {/* Confirm Password (no validation match check) */}
+          {/* Confirm Password */}
           <div>
             <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
               Confirm Password
@@ -131,9 +138,10 @@ export default function SignupForm() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-[#ffa100] hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 rounded-full transition duration-300 shadow-md text-sm sm:text-base"
+            disabled={loading}
+            className="w-full bg-[#ffa100] hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 rounded-full transition duration-300 shadow-md text-sm sm:text-base disabled:opacity-60 flex justify-center items-center gap-2"
           >
-            Sign Up
+            {loading ? <ClipLoader color="white" size={20} /> : "Sign Up"}
           </button>
 
           {/* Login Link */}
