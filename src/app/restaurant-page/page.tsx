@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { axiosInstance } from "@/config/axiosInstance";
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Clock, Star } from "lucide-react";
