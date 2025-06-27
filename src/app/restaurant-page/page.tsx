@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { axiosInstance } from "@/config/axiosInstance";
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Clock, Star } from "lucide-react";
@@ -30,7 +31,9 @@ const RestaurantsPage = () => {
   const fetchRestaurants = async (page: number) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get(`/restaurant/verified-restaurants?page=${page}&limit=8`);
+      const response = await axiosInstance.get(
+        `/restaurant/verified-restaurants?page=${page}&limit=8`
+      );
       setRestDetails(response.data.verifiedRestaurants || []);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -72,16 +75,20 @@ const RestaurantsPage = () => {
                   className="bg-white/90 border border-gray-200 rounded-xl p-3 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:ring-gray-200 transition-all duration-200 hover:scale-[1.01] backdrop-blur-sm"
                 >
                   <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
-                    <img
+                    <Image
                       src={restaurant.image}
                       alt={restaurant.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex justify-between items-start">
-                      <h2 className="text-sm font-semibold text-gray-800 truncate">{restaurant.name}</h2>
+                      <h2 className="text-sm font-semibold text-gray-800 truncate">
+                        {restaurant.name}
+                      </h2>
                       <div className="text-right text-xs text-gray-500 space-y-0.5 leading-tight">
                         <p>📞 {restaurant.phone}</p>
                         <p>📍 {restaurant.pinCode}</p>
@@ -93,7 +100,9 @@ const RestaurantsPage = () => {
                         </p>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-600 truncate">{restaurant.address}</p>
+                    <p className="text-xs text-gray-600 truncate">
+                      {restaurant.address}
+                    </p>
 
                     <div className="flex items-center gap-1 text-xs text-gray-500">
                       <Clock className="w-4 h-4" />
@@ -103,7 +112,9 @@ const RestaurantsPage = () => {
                     <div className="flex items-center justify-between pt-1 text-xs">
                       <span
                         className={`flex items-center gap-1 font-medium ${
-                          restaurant.isVerified ? "text-green-600" : "text-yellow-600"
+                          restaurant.isVerified
+                            ? "text-green-600"
+                            : "text-yellow-600"
                         }`}
                       >
                         {restaurant.isVerified ? (

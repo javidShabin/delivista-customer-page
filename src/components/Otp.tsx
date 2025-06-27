@@ -27,13 +27,10 @@ export default function OtpVerificationForm({ email }: Props) {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.post(
-        "/authentication/verify-user-otp",
-        {
-          email, // use prop directly
-          otp: data.otp,
-        }
-      );
+      await axiosInstance.post("/authentication/verify-user-otp", {
+        email, // use prop directly
+        otp: data.otp,
+      });
       router.push("/");
       // Optionally redirect here (e.g., to dashboard or login)
     } catch (error) {
