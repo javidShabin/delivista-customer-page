@@ -97,7 +97,7 @@ const AuthHeader = () => {
                 </div>
               </Link>
             ) : user?.profile?.startsWith("http") ? (
-              <img
+              <Image
                 src={user.profile}
                 alt="Profile"
                 width={40}

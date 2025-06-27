@@ -34,7 +34,6 @@ export default function OtpVerificationForm({ email }: Props) {
           otp: data.otp,
         }
       );
-      console.log(response.data, "OTP verification success");
       router.push("/");
       // Optionally redirect here (e.g., to dashboard or login)
     } catch (error) {
