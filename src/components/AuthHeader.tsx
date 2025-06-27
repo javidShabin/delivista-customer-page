@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { axiosInstance } from "@/config/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { checkAuth } from "@/utils/api";
+import { setUser, clearUser } from "@/store/slices/authSlice";
 
 const AuthHeader = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [profileImage, setProfileImage] = useState(
-    "/assets/images/default-user.png"
-  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -19,23 +20,20 @@ const AuthHeader = () => {
   }, []);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const fetchAuth = async () => {
       try {
-        const res = await axiosInstance.get("/authentication/verify-auth");
-        setIsAuthenticated(true);
-        setProfileImage(
-          res.data?.user?.profile || "/assets/images/default-user.png"
-        );
-      } catch {
-        setIsAuthenticated(false);
+        const userData = await checkAuth();
+        if (userData) dispatch(setUser(userData));
+        else dispatch(clearUser());
+      } catch (err) {
+        dispatch(clearUser());
       }
     };
-    checkAuth();
-  }, []);
+    fetchAuth();
+  }, [dispatch]);
 
   return (
     <>
-      {/* Top Header */}
       <header
         className={`fixed top-0 w-full z-50 ${
           isScrolled ? "bg-[#ffffff70] shadow-md backdrop-blur-lg" : ""
@@ -92,15 +90,23 @@ const AuthHeader = () => {
 
           {/* Auth Area */}
           <div className="flex gap-5 items-center">
-            {!isAuthenticated ? (
+            {!user ? (
               <Link href="/signup-page">
                 <div className="py-1 sm:py-2 px-4 sm:px-6 bg-[#ffa100] text-white font-semibold rounded-full shadow-lg hover:shadow-[#ffa100] transition duration-300 text-xs sm:text-base">
                   Join Us
                 </div>
               </Link>
+            ) : user?.profile?.startsWith("http") ? (
+              <img
+                src={user.profile}
+                alt="Profile"
+                width={40}
+                height={40}
+                className="rounded-full object-cover border border-white"
+              />
             ) : (
               <Image
-                src={profileImage}
+                src={user?.profile || "/assets/images/default-user.png"}
                 alt="Profile"
                 width={40}
                 height={40}

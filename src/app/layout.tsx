@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import AuthHeader from "@/components/AuthHeader";
-
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper"; // ✅
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,11 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        
-      >
-        <AuthHeader />
-        {children}
+      <body>
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );
