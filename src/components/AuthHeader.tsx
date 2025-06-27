@@ -25,7 +25,7 @@ const AuthHeader = () => {
         const userData = await checkAuth();
         if (userData) dispatch(setUser(userData));
         else dispatch(clearUser());
-      } catch (err) {
+      } catch{
         dispatch(clearUser());
       }
     };
