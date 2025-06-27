@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
+import OtpVerificationForm from "@/components/Otp";
 
 type Inputs = {
   name: string;
@@ -22,6 +23,8 @@ export default function SignupForm() {
   } = useForm<Inputs>();
 
   const [loading, setLoading] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
@@ -31,9 +34,11 @@ export default function SignupForm() {
         "/authentication/user-signup",
         payLoad
       );
-      console.log(response, "data");
+      console.log(response.data, "Signup success");
+      setUserEmail(data.email);    
+      setShowOtpForm(true);         
     } catch (error) {
-      console.log(error, "error");
+      console.log(error, "Signup error");
     } finally {
       setLoading(false);
     }
@@ -41,7 +46,7 @@ export default function SignupForm() {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center bg-cover bg-center px-2"
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-2"
       style={{ backgroundImage: `url("/assets/images/form-bg.jpg")` }}
     >
       <div className="backdrop-blur-md bg-white/10 border border-white/20 w-full h-screen flex justify-center items-center">
@@ -156,6 +161,12 @@ export default function SignupForm() {
           </p>
         </form>
       </div>
+
+      {showOtpForm && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <OtpVerificationForm email={userEmail} />
+        </div>
+      )}
     </section>
   );
 }
