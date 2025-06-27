@@ -78,7 +78,8 @@ const RestaurantsPage = () => {
                     <Image
                       src={restaurant.image}
                       alt={restaurant.name}
-                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
