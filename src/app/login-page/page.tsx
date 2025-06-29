@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { useState } from "react";
 import OtpVerificationForm from "@/components/Otp";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   name: string;
@@ -26,37 +27,35 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const router = useRouter();
+
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    setLoading(true);
-    try {
-      const payLoad = { ...data, role: "customer" };
-      const response = await axiosInstance.post(
-        "/authentication/user-signup",
-        payLoad
-      );
-      toast.success(response.data.message);
-      setUserEmail(data.email);
-      setShowOtpForm(true);
-    } catch (error: unknown) {
-      console.log("Signup error", error);
+  setLoading(true);
+  try {
+    const response = await axiosInstance.post("/authentication/user-login", data);
+    router.push("/");
+    toast.success(response.data.message);
+  } catch (error: unknown) {
+    console.error("Login error", error);
 
-      let errorMessage = "Signup failed. Please try again.";
+    let errorMessage = "Login failed. Please try again.";
 
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error &&
-        typeof (error as any).response?.data?.message === "string"
-      ) {
-        errorMessage = (error as any).response.data.message;
-      }
-
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "response" in error &&
+      typeof (error as { response?: { data?: { message?: unknown } } }).response?.data?.message === "string"
+    ) {
+      errorMessage = (error as { response: { data: { message: string } } }).response.data.message;
     }
-  };
+
+    toast.error(errorMessage);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <section

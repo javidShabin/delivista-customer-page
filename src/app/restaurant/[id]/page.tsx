@@ -25,17 +25,17 @@ const RestaurantById = () => {
   const { id } = useParams() as { id: string };
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
-  const getRestaurantById = async () => {
-    try {
-      const response = await axiosInstance.get(`/restaurant/restaurant-byId/${id}`);
-      setRestaurant(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    if (id) getRestaurantById();
+    const fetchRestaurant = async () => {
+      try {
+        const response = await axiosInstance.get(`/restaurant/restaurant-byId/${id}`);
+        setRestaurant(response.data);
+      } catch (error) {
+        console.error("Failed to fetch restaurant:", error);
+      }
+    };
+
+    if (id) fetchRestaurant();
   }, [id]);
 
   if (!restaurant) {
