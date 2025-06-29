@@ -25,8 +25,6 @@ export default function SignupForm() {
   } = useForm<Inputs>();
 
   const [loading, setLoading] = useState(false);
-  const [showOtpForm, setShowOtpForm] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
 
 
@@ -175,11 +173,7 @@ export default function SignupForm() {
         </form>
       </div>
 
-      {showOtpForm && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <OtpVerificationForm email={userEmail} />
-        </div>
-      )}
+      
     </section>
   );
 }
