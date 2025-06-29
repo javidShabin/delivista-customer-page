@@ -15,19 +15,15 @@ export default function ClientLayoutWrapper({
   children: React.ReactNode;
 }) {
   const [loading, setLoading] = useState(true); // Initially loading
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         const user = await checkAuth();
-        if (user) {
-          // Optionally dispatch user to redux store here
-          setIsAuthChecked(true);
-        }
+       
       } catch (error) {
         console.error("Auth check failed:", error);
-        setIsAuthChecked(false);
+        
       } finally {
         setLoading(false);
       }
