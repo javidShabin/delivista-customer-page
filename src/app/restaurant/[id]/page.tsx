@@ -7,17 +7,28 @@ import { MapPin, Phone, CheckCircle } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import Image from "next/image";
 
+type Restaurant = {
+  name: string;
+  image: string;
+  address: string;
+  phone: string;
+  cuisine?: string[];
+  openTime: string;
+  closeTime: string;
+  pinCode: string;
+  totalReviews: number;
+  isOpen: boolean;
+  isVerified: boolean;
+};
+
 const RestaurantById = () => {
   const { id } = useParams() as { id: string };
-  const [restaurant, setRestaurant] = useState<any>(null);
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
   const getRestaurantById = async () => {
     try {
-      const response = await axiosInstance.get(
-        `/restaurant/restaurant-byId/${id}`
-      );
+      const response = await axiosInstance.get(`/restaurant/restaurant-byId/${id}`);
       setRestaurant(response.data);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -42,12 +53,13 @@ const RestaurantById = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white px-4 py-12">
       <div className="max-w-6xl mx-auto pt-10">
         <div className="bg-white shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-300">
-          {/* Restaurant Banner */}
           <div className="relative h-[220px] sm:h-[300px] group">
             <Image
               src={restaurant.image}
               alt={restaurant.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              width={1000}
+              height={300}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
             <div className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-800 shadow">
@@ -55,7 +67,6 @@ const RestaurantById = () => {
             </div>
           </div>
 
-          {/* Card Content */}
           <div className="p-6 sm:p-8 space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -69,7 +80,6 @@ const RestaurantById = () => {
               )}
             </div>
 
-            {/* Address + Phone (Inline) */}
             <div className="flex items-start gap-3 text-sm text-gray-700">
               <MapPin className="text-orange-500 mt-1" />
               <div>
@@ -87,7 +97,6 @@ const RestaurantById = () => {
               </div>
             </div>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-3 pt-3 text-sm">
               <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
                 🍽 Cuisine: {restaurant.cuisine?.join(", ") || "N/A"}
@@ -105,7 +114,6 @@ const RestaurantById = () => {
           </div>
         </div>
 
-        {/* Menu Placeholder */}
         <div className="mt-10 text-center">
           <h2 className="text-xl font-semibold text-gray-800 mb-1">
             🍴 Menu Items

@@ -5,39 +5,53 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import OtpVerificationForm from "@/components/Otp";
 import { toast } from "react-toastify";
 
 type Inputs = {
   name: string;
+  phone: string;
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
-export default function LoginForm() {
+export default function SignupForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
+      const payLoad = { ...data, role: "customer" };
       const response = await axiosInstance.post(
-        "/authentication/user-login",
-        data
+        "/authentication/user-signup",
+        payLoad
       );
-      router.push("/");
       toast.success(response.data.message);
-      // Handle token or redirect here
-    } catch (error: any) {
-      console.error("Login error", error);
-      const errorMessage =
-        error?.response?.data?.message || "Login failed. Please try again.";
+      setUserEmail(data.email);
+      setShowOtpForm(true);
+    } catch (error: unknown) {
+      console.log("Signup error", error);
+
+      let errorMessage = "Signup failed. Please try again.";
+
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.data?.message === "string"
+      ) {
+        errorMessage = (error as any).response.data.message;
+      }
+
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -55,7 +69,7 @@ export default function LoginForm() {
           className="w-full max-w-sm sm:max-w-md md:max-w-lg backdrop-blur-md bg-white/10 border border-white/20 shadow-xl rounded-3xl px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 space-y-4"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-white">
-            Login to Your Account
+            Create Account
           </h2>
 
           {/* Name */}
@@ -71,6 +85,22 @@ export default function LoginForm() {
             />
             {errors.name && (
               <p className="text-xs text-red-300 mt-1">Name is required</p>
+            )}
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
+              Phone
+            </label>
+            <input
+              type="text"
+              {...register("phone", { required: true })}
+              placeholder="Your phone number"
+              className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
+            />
+            {errors.phone && (
+              <p className="text-xs text-red-300 mt-1">Phone is required</p>
             )}
           </div>
 
@@ -98,11 +128,29 @@ export default function LoginForm() {
             <input
               type="password"
               {...register("password", { required: true })}
-              placeholder="Enter your password"
+              placeholder="Create a password"
               className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
             />
             {errors.password && (
               <p className="text-xs text-red-300 mt-1">Password is required</p>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              {...register("confirmPassword", { required: true })}
+              placeholder="Repeat your password"
+              className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
+            />
+            {errors.confirmPassword && (
+              <p className="text-xs text-red-300 mt-1">
+                Please confirm your password
+              </p>
             )}
           </div>
 
@@ -112,21 +160,27 @@ export default function LoginForm() {
             disabled={loading}
             className="w-full bg-[#ffa100] hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 rounded-full transition duration-300 shadow-md text-sm sm:text-base disabled:opacity-60 flex justify-center items-center gap-2"
           >
-            {loading ? <ClipLoader color="white" size={20} /> : "Login"}
+            {loading ? <ClipLoader color="white" size={20} /> : "Sign Up"}
           </button>
 
-          {/* Signup Link */}
+          {/* Login Link */}
           <p className="text-center text-white text-xs sm:text-sm mt-2">
-            Don’t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/signup-page"
+              href="/login-page"
               className="text-[#ffa100] font-semibold hover:underline transition"
             >
-              Sign up
+              Login
             </Link>
           </p>
         </form>
       </div>
+
+      {showOtpForm && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <OtpVerificationForm email={userEmail} />
+        </div>
+      )}
     </section>
   );
 }

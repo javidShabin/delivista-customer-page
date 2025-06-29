@@ -19,7 +19,7 @@ export default function ClientLayoutWrapper({
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const user = await checkAuth();
+        await checkAuth();
        
       } catch (error) {
         console.error("Auth check failed:", error);

@@ -36,13 +36,17 @@ export default function SignupForm() {
         payLoad
       );
       toast.success(response.data.message);
-      setUserEmail(data.email);    
-      setShowOtpForm(true);         
-    } catch (error: any) {
-      console.log(error, "Signup error");
-      const errorMessage =
-        error?.response?.data?.message || "Login failed. Please try again.";
-      toast.error(errorMessage);
+      setUserEmail(data.email);
+      setShowOtpForm(true);
+    } catch (error: unknown) {
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        const errorMessage =
+          err.response?.data?.message || "Signup failed. Please try again.";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
