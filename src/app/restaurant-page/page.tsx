@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Clock, Star } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Restaurant {
   _id: string;
@@ -77,7 +76,7 @@ const RestaurantsPage = () => {
                 >
                   <div className="bg-white/90 border border-gray-200 rounded-xl p-3 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:ring-gray-200 transition-all duration-200 hover:scale-[1.01] backdrop-blur-sm">
                     <div className="w-full h-28 rounded-lg overflow-hidden mb-2">
-                      <Image
+                      <img
                         src={restaurant.image}
                         alt={restaurant.name}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"

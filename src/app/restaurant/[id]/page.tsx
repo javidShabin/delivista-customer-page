@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { MapPin, Phone, CheckCircle } from "lucide-react";
 import { ClipLoader } from "react-spinners";
-import Image from "next/image";
 
 type Restaurant = {
   name: string;
@@ -54,7 +53,7 @@ const RestaurantById = () => {
       <div className="max-w-6xl mx-auto pt-10">
         <div className="bg-white shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-300">
           <div className="relative h-[220px] sm:h-[300px] group">
-            <Image
+            <img
               src={restaurant.image}
               alt={restaurant.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
