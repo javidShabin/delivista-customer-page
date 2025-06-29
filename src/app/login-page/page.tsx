@@ -10,13 +10,11 @@ import { useRouter } from "next/navigation";
 
 type Inputs = {
   name: string;
-  phone: string;
   email: string;
   password: string;
-  confirmPassword: string;
 };
 
-export default function SignupForm() {
+export default function LoginForm() {
   const {
     register,
     handleSubmit,
@@ -26,33 +24,28 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-  setLoading(true);
-  try {
-    const response = await axiosInstance.post("/authentication/user-login", data);
-    router.push("/");
-    toast.success(response.data.message);
-  } catch (error: unknown) {
-    console.error("Login error", error);
-
-    let errorMessage = "Login failed. Please try again.";
-
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "response" in error &&
-      typeof (error as { response?: { data?: { message?: unknown } } }).response?.data?.message === "string"
-    ) {
-      errorMessage = (error as { response: { data: { message: string } } }).response.data.message;
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post("/authentication/user-login", data);
+      toast.success(response.data.message);
+      router.push("/");
+    } catch (error: unknown) {
+      console.error("Login error", error);
+      let errorMessage = "Login failed. Please try again.";
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as { response?: { data?: { message?: unknown } } }).response?.data?.message === "string"
+      ) {
+        errorMessage = (error as { response: { data: { message: string } } }).response.data.message;
+      }
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
-
-    toast.error(errorMessage);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <section
@@ -65,7 +58,7 @@ export default function SignupForm() {
           className="w-full max-w-sm sm:max-w-md md:max-w-lg backdrop-blur-md bg-white/10 border border-white/20 shadow-xl rounded-3xl px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 space-y-4"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-white">
-            Create Account
+            Login to Your Account
           </h2>
 
           {/* Name */}
@@ -81,22 +74,6 @@ export default function SignupForm() {
             />
             {errors.name && (
               <p className="text-xs text-red-300 mt-1">Name is required</p>
-            )}
-          </div>
-
-          {/* Phone */}
-          <div>
-            <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
-              Phone
-            </label>
-            <input
-              type="text"
-              {...register("phone", { required: true })}
-              placeholder="Your phone number"
-              className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
-            />
-            {errors.phone && (
-              <p className="text-xs text-red-300 mt-1">Phone is required</p>
             )}
           </div>
 
@@ -124,29 +101,11 @@ export default function SignupForm() {
             <input
               type="password"
               {...register("password", { required: true })}
-              placeholder="Create a password"
+              placeholder="Enter your password"
               className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
             />
             {errors.password && (
               <p className="text-xs text-red-300 mt-1">Password is required</p>
-            )}
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label className="block text-xs sm:text-sm font-semibold text-white mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              {...register("confirmPassword", { required: true })}
-              placeholder="Repeat your password"
-              className="w-full px-3 py-2 border border-white/30 bg-white/20 text-white placeholder-white/70 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ffa100]"
-            />
-            {errors.confirmPassword && (
-              <p className="text-xs text-red-300 mt-1">
-                Please confirm your password
-              </p>
             )}
           </div>
 
@@ -156,23 +115,21 @@ export default function SignupForm() {
             disabled={loading}
             className="w-full bg-[#ffa100] hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 rounded-full transition duration-300 shadow-md text-sm sm:text-base disabled:opacity-60 flex justify-center items-center gap-2"
           >
-            {loading ? <ClipLoader color="white" size={20} /> : "Sign Up"}
+            {loading ? <ClipLoader color="white" size={20} /> : "Login"}
           </button>
 
-          {/* Login Link */}
+          {/* Signup Link */}
           <p className="text-center text-white text-xs sm:text-sm mt-2">
-            Already have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
-              href="/login-page"
+              href="/signup-page"
               className="text-[#ffa100] font-semibold hover:underline transition"
             >
-              Login
+              Sign Up
             </Link>
           </p>
         </form>
       </div>
-
-      
     </section>
   );
 }
