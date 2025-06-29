@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
-import OtpVerificationForm from "@/components/Otp";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
