@@ -7,6 +7,7 @@ import chilly1 from "../assets/images/chilly1.png";
 import banner from "../assets/images/banner.png";
 import heroBg from "../assets/images/hero.png";
 import AboutPage from "./About";
+import JoinUs from "../components/JoinUs";
 
 const Home = () => {
   return (
@@ -77,6 +78,7 @@ const Home = () => {
       </section>
 
       <AboutPage />
+      <JoinUs/>
     </>
   );
 };
