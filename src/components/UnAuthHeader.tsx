@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-const AuthHeader = () => {
+const UnAuthHeader = () => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -105,4 +105,4 @@ const AuthHeader = () => {
   )
 }
 
-export default AuthHeader
+export default UnAuthHeader

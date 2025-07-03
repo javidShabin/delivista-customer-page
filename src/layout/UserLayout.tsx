@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom"
-import AuthHeader from "../components/AuthHeader"
+import UnAuthHeader from "../components/UnAuthHeader"
 
 const UserLayout = () => {
   return (
     <>
-      <AuthHeader />
+      <UnAuthHeader />
       <Outlet />
     </>
   )
