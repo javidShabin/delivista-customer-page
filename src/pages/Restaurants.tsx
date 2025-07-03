@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Clock, Star } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom"; // React Router v6+
