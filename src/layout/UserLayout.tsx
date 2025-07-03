@@ -1,13 +1,52 @@
-import { Outlet } from "react-router-dom"
-import UnAuthHeader from "../components/UnAuthHeader"
+import { Outlet, useLocation } from "react-router-dom";
+import UnAuthHeader from "../components/UnAuthHeader";
+import { useEffect, useState } from "react";
+import { checkUserAuth } from "../utils/api";
+import { PropagateLoader } from "react-spinners";
+import type { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser, saveUser } from "../redux/features/user/userSlice";
+import AuthHeader from "../components/authUser/AuthHeader";
 
 const UserLayout = () => {
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { isUserExist } = useSelector((state: RootState) => state.user);
+
+  console.log(isUserExist)
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const response = await checkUserAuth();
+        console.log(response, "====");
+        dispatch(saveUser(response));
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        dispatch(clearUser());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthentication();
+  }, [location.pathname]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <PropagateLoader color="#f97316" size={15} />
+      </div>
+    );
+  }
+
   return (
     <>
-      <UnAuthHeader />
+      {isUserExist ? <AuthHeader /> : <UnAuthHeader />}
       <Outlet />
     </>
-  )
-}
+  );
+};
 
-export default UserLayout
+export default UserLayout;
