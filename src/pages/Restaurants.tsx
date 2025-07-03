@@ -32,7 +32,7 @@ const RestaurantsPage: React.FC = () => {
       const response = await axiosInstance.get(
         `/restaurant/verified-restaurants?page=${page}&limit=8`
       );
-      console.log(response)
+      
       setRestDetails(response.data.verifiedRestaurants || []);
       setTotalPages(response.data.totalPages);
     } catch (error) {
