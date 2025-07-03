@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
-import profileImage from "../../assets/images/logo.png"; // Replace with your own image
 
-const AuthHeader = () => {
+type Props = {
+  profileUrl: string;
+};
+
+
+const AuthHeader = ({profileUrl}: Props) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -74,7 +78,7 @@ const AuthHeader = () => {
           <div className="flex gap-4 items-center">
             <Link to="/profile">
               <img
-                src={profileImage}
+                src={profileUrl}
                 alt="User Profile"
                 className="w-10 h-10 rounded-full border-2 border-[#ffa100] hover:scale-105 transition duration-200 object-cover"
               />

@@ -9,6 +9,7 @@ import { clearUser, saveUser } from "../redux/features/user/userSlice";
 import AuthHeader from "../components/authUser/AuthHeader";
 
 const UserLayout = () => {
+  const [profileUrl, setProfileUrl] = useState("")
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -20,7 +21,7 @@ const UserLayout = () => {
     const checkAuthentication = async () => {
       try {
         const response = await checkUserAuth();
-        console.log(response, "====");
+        setProfileUrl(response.profile)
         dispatch(saveUser(response));
       } catch (error) {
         console.error("Auth check failed:", error);
@@ -43,7 +44,7 @@ const UserLayout = () => {
 
   return (
     <>
-      {isUserExist ? <AuthHeader /> : <UnAuthHeader />}
+      {isUserExist ? <AuthHeader profileUrl={profileUrl} /> : <UnAuthHeader />}
       <Outlet />
     </>
   );
