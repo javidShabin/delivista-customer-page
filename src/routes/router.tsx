@@ -7,6 +7,8 @@ import SignupForm from "../pages/SignupForm";
 import LoginForm from "../pages/LoginForm";
 import AuthUser from "./protectedRoutes/AuthUser";
 import SingleRestaurant from "../pages/SingleRestaurant";
+import AboutPage from "../pages/About";
+import RestaurantsPage from "../pages/Restaurants";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "about-page",
+        element: <AboutPage />
+      },
+      {
+        path: "restaurant-page",
+        element: <RestaurantsPage />
       },
       {
         path: "signup-page",
