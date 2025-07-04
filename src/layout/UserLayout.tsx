@@ -15,8 +15,6 @@ const UserLayout = () => {
   const location = useLocation();
   const { isUserExist } = useSelector((state: RootState) => state.user);
 
-  console.log(isUserExist)
-
   useEffect(() => {
     const checkAuthentication = async () => {
       try {

@@ -34,7 +34,6 @@ export default function SignupForm() {
         "/authentication/user-signup",
         payLoad
       );
-      console.log(response)
       toast.success(response.data.message);
       setUserEmail(data.email); // Save email
       setShowOtpForm(true);     // Show OTP form

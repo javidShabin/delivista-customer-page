@@ -69,7 +69,7 @@ const RestaurantsPage: React.FC = () => {
               {resDetails.map((restaurant) => (
                 <Link
                   key={restaurant._id}
-                  to={`/restaurant/${restaurant._id}`}
+                  to={`/user/restaurant/${restaurant._id}`}
                 >
                   <div className="bg-white/90 border border-gray-200 rounded-xl p-3 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:ring-gray-200 transition-all duration-200 hover:scale-[1.01] backdrop-blur-sm">
                     <div className="w-full h-28 rounded-lg overflow-hidden mb-2">

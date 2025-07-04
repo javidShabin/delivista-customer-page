@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
 
         children: [
           {
-            path: "/restaurant/:id",
+            path: "restaurant/:id",
             element: <SingleRestaurant />
           }
         ]

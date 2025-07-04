@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
+import { toast } from "react-toastify";
 
 
 type Props = {
@@ -33,10 +34,11 @@ export default function OtpVerificationForm({ email }: Props) {
           otp: data.otp,
         }
       );
-      console.log("OTP verified:", response.data);
+      toast.success(response.data.message)
       navigate("/"); // redirect on success
-    } catch (error) {
+    } catch (error:any) {
       console.error("OTP verification failed:", error);
+      toast.error(error.response?.data?.message)
     } finally {
       setLoading(false);
     }
