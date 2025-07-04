@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ShoppingCart, MessagesSquare } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 
 type Props = {
   profileUrl: string;
 };
 
-
-const AuthHeader = ({profileUrl}: Props) => {
+const AuthHeader = ({ profileUrl }: Props) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -74,8 +74,22 @@ const AuthHeader = ({profileUrl}: Props) => {
             </ul>
           </nav>
 
-          {/* Profile Image (instead of Join Us) */}
-          <div className="flex gap-4 items-center">
+          {/* Help + Cart + Profile */}
+          <div className="flex gap-4 lg:gap-10 items-center">
+            {/* Help Icon */}
+            <Link to="/support" className="relative group">
+              <MessagesSquare className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
+            </Link>
+
+            {/* Cart Icon */}
+            <Link to="/cart" className="relative group">
+              <ShoppingCart className="w-6 h-6 text-[#ffa100] hover:scale-110 transition" />
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                2
+              </span>
+            </Link>
+
+            {/* Profile Image */}
             <Link to="/profile">
               <img
                 src={profileUrl}
