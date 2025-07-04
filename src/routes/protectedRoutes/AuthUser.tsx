@@ -9,7 +9,7 @@ const AuthUser = () => {
   // Check the user is loggined or not
   // If not loggined redirect to login page
   if (!isUserExist) {
-    navigate("login-page");
+    navigate("/login-page");
   }
   return isUserExist ? <Outlet /> : null;
 };
