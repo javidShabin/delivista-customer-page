@@ -23,7 +23,8 @@ export const router = createBrowserRouter([
       {
         path: "login-page",
         element: <LoginForm />
-      }
+      },
+      
     ]
   },
 ]);
