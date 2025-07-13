@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
+import { Heart } from "lucide-react";
 
 interface MenuProps {
   restaurantId: string | undefined;
@@ -31,6 +32,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -50,13 +52,17 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
     }
   }, [restaurantId, page]);
 
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
+    );
+  };
+
   return (
     <section className="py-10 px-4 md:px-10 lg:px-1">
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">🍴 Menu Items</h2>
-        <p className="text-gray-500 text-md">
-          Explore our delicious and freshly made menu!
-        </p>
+        <p className="text-gray-500 text-md">Explore our delicious and freshly made menu!</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -71,23 +77,32 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               className="w-full h-36 object-cover"
             />
 
-            <button className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition">
+            {/* ❤️ Favorite Icon */}
+            <button
+              onClick={() => toggleFavorite(item._id)}
+              className="absolute top-3 left-3 p-1 rounded-full backdrop-blur-md bg-white/70 hover:ring-2 hover:ring-orange-400 transition-all shadow-md"
+            >
+              <Heart
+                size={18}
+                className={`transition-all duration-300 ${
+                  favorites.includes(item._id)
+                    ? "fill-orange-500 text-orange-500 scale-110"
+                    : "text-gray-400 hover:text-orange-400"
+                }`}
+              />
+            </button>
+
+            <button className="absolute bottom-32 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition">
               Add to cart
             </button>
 
             <div className="p-3">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="text-sm font-semibold text-gray-800">
-                  {item.productName}
-                </h3>
-                <span className="text-orange-600 font-bold text-sm">
-                  ₹{item.price}
-                </span>
+                <h3 className="text-sm font-semibold text-gray-800">{item.productName}</h3>
+                <span className="text-orange-600 font-bold text-sm">₹{item.price}</span>
               </div>
 
-              <p className="text-xs text-gray-600 mb-2 line-clamp-2">
-                {item.description}
-              </p>
+              <p className="text-xs text-gray-600 mb-2 line-clamp-2">{item.description}</p>
 
               <div className="flex flex-wrap gap-1 mb-2">
                 {item.tags.map((tag, idx) => (
@@ -114,13 +129,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
                   ⭐ {item.ratings} / {item.totalReviews} reviews
                 </span>
                 {item.isAvailable ? (
-                  <span className="text-green-600 text-[10px] font-semibold">
-                    Available
-                  </span>
+                  <span className="text-green-600 text-[10px] font-semibold">Available</span>
                 ) : (
-                  <span className="text-red-600 text-[10px] font-semibold">
-                    Out of Stock
-                  </span>
+                  <span className="text-red-600 text-[10px] font-semibold">Out of Stock</span>
                 )}
               </div>
             </div>
@@ -129,9 +140,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
       </div>
 
       {menuItems.length === 0 && (
-        <p className="text-center text-gray-400 mt-8">
-          No menu items available.
-        </p>
+        <p className="text-center text-gray-400 mt-8">No menu items available.</p>
       )}
 
       {totalPages > 1 && (
