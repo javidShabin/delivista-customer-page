@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MapPin, Phone, CheckCircle } from "lucide-react";
+import { MapPin, Phone, CheckCircle} from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { axiosInstance } from "../config/axiosInstance";
+import Menu from "../components/authUser/menu";
 
 type Restaurant = {
   name: string;
@@ -111,14 +112,7 @@ const SingleRestaurant: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-10 text-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-1">
-            🍴 Menu Items
-          </h2>
-          <p className="text-gray-500 text-sm">
-            This section will show menu items soon. Stay tuned!
-          </p>
-        </div>
+        <Menu restaurantId={id} />
       </div>
     </div>
   );
