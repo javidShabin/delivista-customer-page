@@ -33,24 +33,44 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [allCategories, setAllCategories] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchMenuItems = async () => {
-      try {
-        const response = await axiosInstance.get(
+ useEffect(() => {
+  if (!restaurantId) return;
+
+  const fetchMenuItems = async () => {
+    try {
+      let response;
+
+      if (categoryFilter === "All") {
+        response = await axiosInstance.get(
           `/menu/get-all-menus/${restaurantId}?page=${page}&limit=8`
         );
-        setMenuItems(response.data.menus);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.error(error);
+      } else {
+        response = await axiosInstance.get(
+          `/menu/get-menu-by-catagory/${categoryFilter}?restaurantId=${restaurantId}&page=${page}&limit=8`
+        );
       }
-    };
 
-    if (restaurantId) {
-      fetchMenuItems();
+      const menus: MenuItem[] = response.data.data || response.data.menus;
+      setMenuItems(menus);
+      setTotalPages(response.data.totalPages || 1);
+
+      const uniqueCategories: string[] = Array.from(
+        new Set(menus.map((item) => item.category))
+      );
+
+      setAllCategories(["All", ...uniqueCategories]);
+    } catch (error) {
+      console.error("Error fetching menus:", error);
     }
-  }, [restaurantId, page]);
+  };
+
+  fetchMenuItems();
+}, [restaurantId, categoryFilter, page]);
+
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -65,6 +85,31 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         <p className="text-gray-500 text-md">Explore our delicious and freshly made menu!</p>
       </div>
 
+      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+        <input
+          type="text"
+          placeholder="Search menu..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+
+        <select
+          value={categoryFilter}
+          onChange={(e) => {
+            setCategoryFilter(e.target.value);
+            setPage(1); // reset to first page on filter change
+          }}
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-52 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        >
+          {allCategories.map((cat, i) => (
+            <option key={i} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {menuItems.map((item) => (
           <div
@@ -77,7 +122,6 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               className="w-full h-36 object-cover"
             />
 
-            {/* ❤️ Favorite Icon */}
             <button
               onClick={() => toggleFavorite(item._id)}
               className="absolute top-3 left-3 p-1 rounded-full backdrop-blur-md bg-white/70 hover:ring-2 hover:ring-orange-400 transition-all shadow-md"
@@ -92,7 +136,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               />
             </button>
 
-            <button className="absolute bottom-32 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition">
+            <button className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition">
               Add to cart
             </button>
 
@@ -101,6 +145,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
                 <h3 className="text-sm font-semibold text-gray-800">{item.productName}</h3>
                 <span className="text-orange-600 font-bold text-sm">₹{item.price}</span>
               </div>
+
+              <p className="text-[11px] text-gray-500 mb-1 italic">Category: {item.category}</p>
 
               <p className="text-xs text-gray-600 mb-2 line-clamp-2">{item.description}</p>
 
@@ -140,7 +186,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
       </div>
 
       {menuItems.length === 0 && (
-        <p className="text-center text-gray-400 mt-8">No menu items available.</p>
+        <p className="text-center text-gray-400 mt-8">No menu items found.</p>
       )}
 
       {totalPages > 1 && (
