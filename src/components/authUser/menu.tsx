@@ -35,6 +35,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+  const [tagFilter, setTagFilter] = useState(""); // New tag filter
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   useEffect(() => {
@@ -47,6 +48,10 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         if (search.trim() !== "") {
           response = await axiosInstance.get(
             `/menu/search-menu?restaurantId=${restaurantId}&keyword=${search}&page=${page}&limit=8`
+          );
+        } else if (tagFilter !== "") {
+          response = await axiosInstance.get(
+            `/menu/menu-by-tag?restaurantId=${restaurantId}&tag=${tagFilter}&page=${page}&limit=8`
           );
         } else if (categoryFilter === "All") {
           response = await axiosInstance.get(
@@ -72,7 +77,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
     };
 
     fetchMenuItems();
-  }, [restaurantId, categoryFilter, search, page]);
+  }, [restaurantId, categoryFilter, search, page, tagFilter]);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -94,7 +99,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setPage(1); // Reset page when searching
+            setPage(1);
+            setCategoryFilter("All");
+            setTagFilter("");
           }}
           className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
@@ -103,15 +110,37 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           value={categoryFilter}
           onChange={(e) => {
             setCategoryFilter(e.target.value);
-            setPage(1); // Reset to first page on filter change
+            setPage(1);
+            setSearch("");
+            setTagFilter("");
           }}
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-36 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-24 focus:outline-none focus:ring-2 focus:ring-orange-400"
         >
           {allCategories.map((cat, i) => (
             <option key={i} value={cat}>
               {cat}
             </option>
           ))}
+        </select>
+
+        <select
+          value={tagFilter}
+          onChange={(e) => {
+            setTagFilter(e.target.value);
+            setPage(1);
+            setSearch("");
+            setCategoryFilter("All");
+          }}
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-24 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        >
+          <option value="">All Tags</option>
+          <option value="Spicy">Spicy</option>
+          <option value="Popular">Popular</option>
+          <option value="New Arrival">New Arrival</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Healthy">Healthy</option>
+          <option value="Sweet">Sweet</option>
+          <option value="Chef's Special">Chef's Special</option>
         </select>
       </div>
 
@@ -152,7 +181,6 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               </div>
 
               <p className="text-[11px] text-gray-500 mb-1 italic">Category: {item.category}</p>
-
               <p className="text-xs text-gray-600 mb-2 line-clamp-2">{item.description}</p>
 
               <div className="flex flex-wrap gap-1 mb-2">
@@ -209,9 +237,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               key={i}
               onClick={() => setPage(i + 1)}
               className={`px-3 py-1 rounded text-sm font-medium ${
-                page === i + 1
-                  ? "bg-orange-500 text-white"
-                  : "bg-gray-100 text-gray-800"
+                page === i + 1 ? "bg-orange-500 text-white" : "bg-gray-100 text-gray-800"
               }`}
             >
               {i + 1}
