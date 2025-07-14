@@ -37,40 +37,42 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
- useEffect(() => {
-  if (!restaurantId) return;
+  useEffect(() => {
+    if (!restaurantId) return;
 
-  const fetchMenuItems = async () => {
-    try {
-      let response;
+    const fetchMenuItems = async () => {
+      try {
+        let response;
 
-      if (categoryFilter === "All") {
-        response = await axiosInstance.get(
-          `/menu/get-all-menus/${restaurantId}?page=${page}&limit=8`
+        if (search.trim() !== "") {
+          response = await axiosInstance.get(
+            `/menu/search-menu?restaurantId=${restaurantId}&keyword=${search}&page=${page}&limit=8`
+          );
+        } else if (categoryFilter === "All") {
+          response = await axiosInstance.get(
+            `/menu/get-all-menus/${restaurantId}?page=${page}&limit=8`
+          );
+        } else {
+          response = await axiosInstance.get(
+            `/menu/get-menu-by-catagory/${categoryFilter}?restaurantId=${restaurantId}&page=${page}&limit=8`
+          );
+        }
+
+        const menus: MenuItem[] = response.data.data || response.data.menus;
+        setMenuItems(menus);
+        setTotalPages(response.data.totalPages || 1);
+
+        const uniqueCategories: string[] = Array.from(
+          new Set(menus.map((item) => item.category))
         );
-      } else {
-        response = await axiosInstance.get(
-          `/menu/get-menu-by-catagory/${categoryFilter}?restaurantId=${restaurantId}&page=${page}&limit=8`
-        );
+        setAllCategories(["All", ...uniqueCategories]);
+      } catch (error) {
+        console.error("Error fetching menus:", error);
       }
+    };
 
-      const menus: MenuItem[] = response.data.data || response.data.menus;
-      setMenuItems(menus);
-      setTotalPages(response.data.totalPages || 1);
-
-      const uniqueCategories: string[] = Array.from(
-        new Set(menus.map((item) => item.category))
-      );
-
-      setAllCategories(["All", ...uniqueCategories]);
-    } catch (error) {
-      console.error("Error fetching menus:", error);
-    }
-  };
-
-  fetchMenuItems();
-}, [restaurantId, categoryFilter, page]);
-
+    fetchMenuItems();
+  }, [restaurantId, categoryFilter, search, page]);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -85,12 +87,15 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         <p className="text-gray-500 text-md">Explore our delicious and freshly made menu!</p>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8">
         <input
           type="text"
           placeholder="Search menu..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1); // Reset page when searching
+          }}
           className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
 
@@ -98,9 +103,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           value={categoryFilter}
           onChange={(e) => {
             setCategoryFilter(e.target.value);
-            setPage(1); // reset to first page on filter change
+            setPage(1); // Reset to first page on filter change
           }}
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-52 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm w-full md:w-36 focus:outline-none focus:ring-2 focus:ring-orange-400"
         >
           {allCategories.map((cat, i) => (
             <option key={i} value={cat}>
