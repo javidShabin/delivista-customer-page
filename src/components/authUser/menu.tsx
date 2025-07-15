@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../config/axiosInstance";
+import {
+  fetchAllMenus,
+  fetchMenusByCategory,
+  fetchMenusBySearch,
+  fetchMenusByTag,
+  fetchAvailableMenus,
+} from "../../services/menuService";
+
+import { addToCartAPI } from "../../services/cartService";
 import { Heart } from "lucide-react";
+import { toast } from "react-toastify";
 
 interface MenuProps {
   restaurantId: string | undefined;
@@ -16,6 +25,10 @@ interface MenuItem {
   _id: string;
   productName: string;
   description: string;
+  sellerId: string;
+  customerId: string;
+  restaurantId: string;
+  quantity: number;
   image: string;
   price: number;
   isVeg: boolean;
@@ -42,50 +55,74 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   useEffect(() => {
     if (!restaurantId) return;
 
-    const fetchMenuItems = async () => {
+    const fetchMenu = async () => {
       try {
         let response;
 
-        if (search.trim() !== "") {
-          response = await axiosInstance.get(
-            `/menu/search-menu?restaurantId=${restaurantId}&keyword=${search}&page=${page}&limit=8`
-          );
-        } else if (tagFilter !== "") {
-          response = await axiosInstance.get(
-            `/menu/menu-by-tag?restaurantId=${restaurantId}&tag=${tagFilter}&page=${page}&limit=8`
-          );
+        if (search.trim()) {
+          response = await fetchMenusBySearch(search, restaurantId, page);
+        } else if (tagFilter) {
+          response = await fetchMenusByTag(tagFilter, restaurantId, page);
         } else if (showAvailableOnly) {
-          response = await axiosInstance.get(
-            `/app/menu/available-menu?restaurantId=${restaurantId}&isAvailable=true&page=${page}&limit=8`
-          );
+          response = await fetchAvailableMenus(restaurantId, page);
         } else if (categoryFilter === "All") {
-          response = await axiosInstance.get(
-            `/menu/get-all-menus/${restaurantId}?page=${page}&limit=8`
-          );
+          response = await fetchAllMenus(restaurantId, page);
         } else {
-          response = await axiosInstance.get(
-            `/menu/get-menu-by-catagory/${categoryFilter}?restaurantId=${restaurantId}&page=${page}&limit=8`
-          );
+          response = await fetchMenusByCategory(categoryFilter, restaurantId, page);
         }
 
         const menus: MenuItem[] = response.data.data || response.data.menus;
         setMenuItems(menus);
         setTotalPages(response.data.totalPages || 1);
 
-        const uniqueCategories = Array.from(new Set(menus.map((item) => item.category)));
-        setAllCategories(["All", ...uniqueCategories]);
+        const categories = Array.from(new Set(menus.map((item) => item.category)));
+        setAllCategories(["All", ...categories]);
       } catch (error) {
-        console.error("Error fetching menus:", error);
+        console.error("Fetch menu error:", error);
       }
     };
 
-    fetchMenuItems();
+    fetchMenu();
   }, [restaurantId, categoryFilter, search, page, tagFilter, showAvailableOnly]);
+
+  const handleAddToCart = async (item: MenuItem) => {
+    try {
+      const payload = {
+        sellerId: item.sellerId,
+        customerId: item.customerId,
+        restaurantId: item.restaurantId,
+        items: [
+          {
+            menuId: item._id,
+            quantity: item.quantity || 1,
+            price: item.price,
+            image: item.image,
+            productName: item.productName,
+            category: item.category,
+            isVeg: item.isVeg,
+          },
+        ],
+      };
+
+      const response = await addToCartAPI(payload);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to add to cart");
+    }
+  };
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
     );
+  };
+
+  const resetFilters = () => {
+    setSearch("");
+    setCategoryFilter("All");
+    setTagFilter("");
+    setShowAvailableOnly(false);
+    setPage(1);
   };
 
   return (
@@ -102,11 +139,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           placeholder="Search menu..."
           value={search}
           onChange={(e) => {
+            resetFilters();
             setSearch(e.target.value);
-            setPage(1);
-            setCategoryFilter("All");
-            setTagFilter("");
-            setShowAvailableOnly(false);
           }}
           className="px-4 py-2 border border-gray-300 rounded-lg w-full md:w-64 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
         />
@@ -114,11 +148,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         <select
           value={categoryFilter}
           onChange={(e) => {
+            resetFilters();
             setCategoryFilter(e.target.value);
-            setSearch("");
-            setTagFilter("");
-            setShowAvailableOnly(false);
-            setPage(1);
           }}
           className="px-3 py-2 border border-gray-300 rounded-lg w-full md:w-40 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
         >
@@ -132,11 +163,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         <select
           value={tagFilter}
           onChange={(e) => {
+            resetFilters();
             setTagFilter(e.target.value);
-            setSearch("");
-            setCategoryFilter("All");
-            setShowAvailableOnly(false);
-            setPage(1);
           }}
           className="px-3 py-2 border border-gray-300 rounded-lg w-full md:w-40 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
         >
@@ -155,11 +183,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
             type="checkbox"
             checked={showAvailableOnly}
             onChange={(e) => {
+              resetFilters();
               setShowAvailableOnly(e.target.checked);
-              setSearch("");
-              setCategoryFilter("All");
-              setTagFilter("");
-              setPage(1);
             }}
             className="accent-orange-500 w-4 h-4"
           />
@@ -176,7 +201,6 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           >
             <img src={item.image} alt={item.productName} className="w-full h-36 object-cover" />
 
-            {/* Favorite */}
             <button
               onClick={() => toggleFavorite(item._id)}
               className="absolute top-3 left-3 p-1 bg-white/80 rounded-full backdrop-blur shadow"
@@ -191,8 +215,10 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               />
             </button>
 
-            {/* Add to Cart */}
-            <button className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition">
+            <button
+              onClick={() => handleAddToCart(item)}
+              className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition"
+            >
               Add to cart
             </button>
 
@@ -216,9 +242,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
                 ))}
                 <span
                   className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                    item.isVeg
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
+                    item.isVeg ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                   }`}
                 >
                   {item.isVeg ? "🌱 Veg" : "🍖 Non-Veg"}
@@ -242,7 +266,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         ))}
       </div>
 
-      {/* No Items */}
+      {/* No items */}
       {menuItems.length === 0 && (
         <p className="text-center text-gray-400 mt-10">No menu items found.</p>
       )}
