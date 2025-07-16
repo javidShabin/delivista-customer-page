@@ -9,7 +9,6 @@ import heroBg from "../assets/images/hero.png";
 import AboutPage from "./About";
 import JoinUs from "../components/JoinUs";
 import RestaurantsPage from "./Restaurants";
-import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -82,7 +81,6 @@ const Home = () => {
       <AboutPage />
       <JoinUs/>
       <RestaurantsPage />
-      <Footer />
     </>
   );
 };
