@@ -159,7 +159,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
       setFavorites((prev) => [...prev, menuId]);
       
     } catch (error: any) {
-      
+      console.log(error)
     }
   };
 
