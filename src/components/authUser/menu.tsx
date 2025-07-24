@@ -12,6 +12,7 @@ import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { useCart } from "../../context/CartContext";
+import { axiosInstance } from "../../config/axiosInstance";
 
 interface MenuProps {
   restaurantId: string | undefined;
@@ -121,6 +122,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const handleAddToCart = async (item: MenuItem) => {
     try {
       const payload = {
+        menuId: item._id,
         sellerId: item.sellerId,
         customerId: item.customerId,
         restaurantId: item.restaurantId,
@@ -140,20 +142,35 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
       const response = await addToCartAPI(payload);
       toast.success(response.data.message);
 
-      // ✅ re-fetch cart after adding
+      // Re-fetch cart after adding
       const res = await getAllCart();
       setCartDetails(res.data.items.length);
       setCartCount(res.data.items.length);
-
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to add to cart");
     }
   };
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
-    );
+  const toggleFavorite = async (item:MenuItem) => {
+    try {
+      const items = {
+        menuId: item._id,
+        productName: item.productName,
+        restaurantId: item.restaurantId,
+        category: item.category,
+        price: item.price,
+        image: item.image,
+        isAvailable: item.isAvailable,
+        isVeg: item.isVeg,
+        ratings: item.ratings
+      }
+      const response = await axiosInstance.post("/wishlist/add", items)
+      console.log(response)
+      setFavorites((prev) => [...prev, item._id]);
+      
+    } catch (error: any) {
+      
+    }
   };
 
   const resetFilters = () => {
@@ -210,18 +227,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
           className="px-3 py-2 border border-gray-300 rounded-lg w-full md:w-40 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
         >
           <option value="">All Tags</option>
-          {[
-            "Spicy",
-            "Popular",
-            "New Arrival",
-            "Vegan",
-            "Healthy",
-            "Sweet",
-            "Chef's Special",
-          ].map((tag, i) => (
-            <option key={i} value={tag}>
-              {tag}
-            </option>
+          {["Spicy","Popular","New Arrival","Vegan","Healthy","Sweet","Chef's Special"].map((tag, i) => (
+            <option key={i} value={tag}>{tag}</option>
           ))}
         </select>
 
@@ -252,8 +259,9 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               className="w-full h-36 object-cover"
             />
 
+            {/* Heart Icon */}
             <button
-              onClick={() => toggleFavorite(item._id)}
+              onClick={() => toggleFavorite(item)}
               className="absolute top-3 left-3 p-1 bg-white/80 rounded-full backdrop-blur shadow"
             >
               <Heart
@@ -266,6 +274,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
               />
             </button>
 
+            {/* Add to Cart */}
             <button
               onClick={() => handleAddToCart(item)}
               className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow-md transition"
@@ -275,50 +284,25 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
 
             <div className="p-3">
               <div className="flex justify-between items-center">
-                <h3 className="text-sm font-semibold text-gray-800">
-                  {item.productName}
-                </h3>
-                <span className="text-orange-600 font-bold text-sm">
-                  ₹{item.price}
-                </span>
+                <h3 className="text-sm font-semibold text-gray-800">{item.productName}</h3>
+                <span className="text-orange-600 font-bold text-sm">₹{item.price}</span>
               </div>
 
-              <p className="text-[11px] italic text-gray-500 mb-1">
-                Category: {item.category}
-              </p>
-              <p className="text-xs text-gray-600 mb-2 line-clamp-2">
-                {item.description}
-              </p>
+              <p className="text-[11px] italic text-gray-500 mb-1">Category: {item.category}</p>
+              <p className="text-xs text-gray-600 mb-2 line-clamp-2">{item.description}</p>
 
               <div className="flex flex-wrap gap-1 mb-2">
                 {item.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-[10px] font-medium"
-                  >
-                    #{tag}
-                  </span>
+                  <span key={idx} className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-[10px] font-medium">#{tag}</span>
                 ))}
-                <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                    item.isVeg
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${item.isVeg ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
                   {item.isVeg ? "🌱 Veg" : "🍖 Non-Veg"}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-[11px] text-gray-500">
-                  ⭐ {item.ratings} / {item.totalReviews} reviews
-                </span>
-                <span
-                  className={`text-[10px] font-semibold ${
-                    item.isAvailable ? "text-green-600" : "text-red-600"
-                  }`}
-                >
+                <span className="text-[11px] text-gray-500">⭐ {item.ratings} / {item.totalReviews} reviews</span>
+                <span className={`text-[10px] font-semibold ${item.isAvailable ? "text-green-600" : "text-red-600"}`}>
                   {item.isAvailable ? "Available" : "Out of Stock"}
                 </span>
               </div>
