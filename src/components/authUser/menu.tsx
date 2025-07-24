@@ -151,22 +151,12 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
     }
   };
 
-  const toggleFavorite = async (item:MenuItem) => {
+  const toggleFavorite = async (menuId:any) => {
     try {
-      const items = {
-        menuId: item._id,
-        productName: item.productName,
-        restaurantId: item.restaurantId,
-        category: item.category,
-        price: item.price,
-        image: item.image,
-        isAvailable: item.isAvailable,
-        isVeg: item.isVeg,
-        ratings: item.ratings
-      }
-      const response = await axiosInstance.post("/wishlist/add", items)
+      console.log(menuId)
+      const response = await axiosInstance.post("/wishlist/add", {menuId})
       console.log(response)
-      setFavorites((prev) => [...prev, item._id]);
+      setFavorites((prev) => [...prev, menuId]);
       
     } catch (error: any) {
       
@@ -261,7 +251,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
 
             {/* Heart Icon */}
             <button
-              onClick={() => toggleFavorite(item)}
+              onClick={() => toggleFavorite(item._id)}
               className="absolute top-3 left-3 p-1 bg-white/80 rounded-full backdrop-blur shadow"
             >
               <Heart
