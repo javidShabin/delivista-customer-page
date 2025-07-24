@@ -8,11 +8,11 @@ import {
 } from "../../services/menuService";
 
 import { addToCartAPI, getAllCart } from "../../services/cartService";
+import { addToWishlist } from "../../services/wishlistService";
 import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { useCart } from "../../context/CartContext";
-import { axiosInstance } from "../../config/axiosInstance";
 
 interface MenuProps {
   restaurantId: string | undefined;
@@ -154,7 +154,7 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const toggleFavorite = async (menuId:any) => {
     try {
       console.log(menuId)
-      const response = await axiosInstance.post("/wishlist/add", {menuId})
+      const response = await addToWishlist(menuId)
       console.log(response)
       setFavorites((prev) => [...prev, menuId]);
       
