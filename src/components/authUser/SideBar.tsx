@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
     { id: "Orders", label: "My Orders", icon: LinkIcon, path: "/user/dashboard/order" },
     { id: "Address", label: "My Address", icon: LinkIcon, path: "/user/dashboard/address" },
     { id: "Cart", label: "My Cart", icon: ShoppingCart, path: "/user/cart" },
-    { id: "Fav", label: "Favorites", icon: Heart, path: "/user/favoite" },
+    { id: "Fav", label: "Favorites", icon: Heart, path: "/user/dashboard/favorite" },
     { id: "Restaurant", label: "Restaurants", icon: Hotel, path: "/restaurant-page" },
     { id: "Settings", label: "Settings", icon: Settings, dropdown: true },
   ];

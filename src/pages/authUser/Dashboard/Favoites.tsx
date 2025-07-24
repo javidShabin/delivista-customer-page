@@ -1,5 +1,4 @@
 
-
 const Favoites = () => {
   return (
     <div>Favoites</div>
