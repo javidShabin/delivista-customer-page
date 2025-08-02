@@ -54,9 +54,7 @@ const CartPage = () => {
   // ***********************************************************************
  const removeItem = async (menuId: any) => {
   try {
-    const response = await axiosInstance.delete("/cart/remove-item", {
-      data: { menuId },
-    });
+    const response = await axiosInstance.post("/cart/remove-item", { menuId });
 
     toast.success(response.data.message);
 
