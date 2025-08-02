@@ -60,7 +60,7 @@ const CartPage = () => {
 
     toast.success(response.data.message);
 
-    // ✅ Update local state based on response
+    // Update local state based on response
     const { items, totalPrice } = response.data.cart;
     setCartItems(items);
     setTotalPrice(totalPrice);
