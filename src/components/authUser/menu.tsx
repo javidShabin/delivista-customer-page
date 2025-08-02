@@ -9,7 +9,7 @@ import {
 
 import { addToCartAPI } from "../../services/cartService";
 import { Heart } from "lucide-react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 interface MenuProps {
   restaurantId: string | undefined;

@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import formBg from "../assets/images/form-bg.jpg";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;

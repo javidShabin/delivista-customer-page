@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
+import toast from "react-hot-toast";
+
 
 interface CartItem {
   menuId: string;
@@ -48,11 +50,29 @@ const CartPage = () => {
     }
   };
 
-  const removeItem = (index: number) => {
-    const updated = [...cartItems];
-    updated.splice(index, 1);
-    setCartItems(updated);
-  };
+  // *************** Remove items from cart function ***********************
+  // ***********************************************************************
+ const removeItem = async (menuId: any) => {
+  try {
+    const response = await axiosInstance.delete("/cart/remove-item", {
+      data: { menuId },
+    });
+
+    toast.success(response.data.message);
+
+    // ✅ Update local state based on response
+    const { items, totalPrice } = response.data.cart;
+    setCartItems(items);
+    setTotalPrice(totalPrice);
+  } catch (error: any) {
+    const errorMsg =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong";
+    toast.error(errorMsg);
+    console.error("Error deleting item:", error);
+  }
+};
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] px-4 md:px-8 py-10">
@@ -89,7 +109,7 @@ const CartPage = () => {
                       <Trash2
                         size={18}
                         className="text-red-500 hover:text-red-700 cursor-pointer"
-                        onClick={() => removeItem(index)}
+                        onClick={() => removeItem(item.menuId)}
                       />
                     </div>
 

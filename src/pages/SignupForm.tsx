@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import formBg from "../assets/images/form-bg.jpg";
 import { axiosInstance } from "../config/axiosInstance";
 import OtpVerificationForm from "../components/OtpVerify";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;

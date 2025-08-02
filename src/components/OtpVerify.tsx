@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 
 type Props = {
