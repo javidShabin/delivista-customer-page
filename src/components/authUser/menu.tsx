@@ -56,6 +56,8 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
   const [cartDetails, setCartDetails] = useState(0);
   const { setCartCount } = useCart();
 
+  setCartCount(cartDetails);
+
   // Get the cart count details
   useEffect(() => {
     const fetchCartDetails = async () => {
@@ -63,7 +65,6 @@ const Menu: React.FC<MenuProps> = ({ restaurantId }) => {
         const response = await getAllCart();
         const { items } = response.data;
         setCartDetails(items.length);
-        setCartCount(items.length); // ✅ update context here
       } catch (error) {
         console.error("Failed to fetch cart:", error);
       }
