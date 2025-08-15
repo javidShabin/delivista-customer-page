@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Home,
   User,
@@ -6,7 +6,10 @@ import {
   Settings,
   LogOut,
   UserCog,
-  Shield,
+  KeyRound,
+  Moon,
+  Sun,
+  FileText
 } from "lucide-react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,17 +31,33 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
   const [active, setActive] = useState<string>("Dashboard");
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const items: NavItem[] = [
     { id: "Dashboard", label: "Dashboard", icon: Home, path: "/user/dashboard" },
     { id: "Profile", label: "Profile", icon: User, path: "/user/dashboard/profile" },
-    { id: "My-Links", label: "My Links", icon: LinkIcon, path: "/user/dashboard/prev-links" },
-    { id: "Settings", label: "Settings", icon: Settings, path: "/user/settings", dropdown: true },
+    { id: "Orders", label: "My Orders", icon: LinkIcon, path: "/user/dashboard/order" },
+    { id: "Address", label: "My Address", icon: LinkIcon, path: "/user/dashboard/address" },
+    { id: "Settings", label: "Settings", icon: Settings, dropdown: true },
   ];
 
-  function handleNav(item: NavItem): void {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setDarkMode(savedTheme === "dark");
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = darkMode ? "light" : "dark";
+    setDarkMode(!darkMode);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  // Modified to prevent sidebar closing on dropdown toggle
+  function handleNav(item: NavItem, isDropdownToggle = false): void {
     setActive(item.id);
-    if (onNavigate) onNavigate(item.id);
+    if (!isDropdownToggle && onNavigate) onNavigate(item.id);
   }
 
   const handleLogout = async (): Promise<void> => {
@@ -52,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
   };
 
   return (
-    <aside className="flex flex-col justify-between text-gray-800 p-4 w-72 h-screen bg-white border-r border-orange-200">
+    <aside className="flex flex-col justify-between text-gray-800 p-4 w-72 h-screen bg-base-100 border-r border-orange-200">
       <div>
         {/* Logo */}
         <div className="flex items-center gap-3 mb-6">
@@ -77,9 +96,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
               <div key={it.id} className="relative">
                 <Link
                   to={!it.dropdown ? it.path ?? "#" : "#"}
-                  onClick={() => {
-                    handleNav(it);
-                    if (it.dropdown) setSettingsOpen((prev) => !prev);
+                  onClick={(e) => {
+                    if (it.dropdown) {
+                      e.preventDefault(); // Prevent redirect
+                      setSettingsOpen((prev) => !prev);
+                      handleNav(it, true); // Don't close sidebar
+                    } else {
+                      handleNav(it); // Close on mobile
+                    }
                   }}
                   className={`flex items-center gap-3 w-full text-sm rounded-lg p-2 transition-all
                     ${
@@ -112,15 +136,31 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                   <div className="ml-12 mt-1 flex flex-col gap-1">
                     <Link
                       to="/user/dashboard/edit-profile"
+                      onClick={() => handleNav(it)}
                       className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
                     >
-                      <UserCog size={14} /> Profile edit
+                      <UserCog size={14} /> Edit Profile
                     </Link>
                     <Link
-                      to="/user/settings/privacy"
+                      to="/user/dashboard/change-password"
+                      onClick={() => handleNav(it)}
                       className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
                     >
-                      <Shield size={14} /> Privacy
+                      <KeyRound size={14} /> Change Password
+                    </Link>
+                    <button
+                      onClick={toggleTheme}
+                      className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
+                    >
+                      {darkMode ? <Sun size={14} /> : <Moon size={14} />}
+                      {darkMode ? "Day Theme" : "Dark Theme"}
+                    </button>
+                    <Link
+                      to="/user/settings/privacy-policy"
+                      onClick={() => handleNav(it)}
+                      className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
+                    >
+                      <FileText size={14} /> Privacy Policy
                     </Link>
                   </div>
                 )}
