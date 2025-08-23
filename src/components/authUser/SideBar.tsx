@@ -4,7 +4,6 @@ import {
   Link as LinkIcon,
   Settings,
   LogOut,
-  UserCog,
   KeyRound,
   Moon,
   Sun,
@@ -136,13 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
                 {/* Dropdown Menu */}
                 {it.dropdown && settingsOpen && (
                   <div className="ml-12 mt-1 flex flex-col gap-1">
-                    <Link
-                      to="/user/dashboard/settings/edit-profile"
-                      onClick={() => handleNav(it)}
-                      className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 p-1 rounded-lg hover:bg-orange-50"
-                    >
-                      <UserCog size={14} /> Edit Profile
-                    </Link>
+                    
                     <Link
                       to="/user/dashboard/settings/update-password"
                       onClick={() => handleNav(it)}

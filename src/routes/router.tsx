@@ -12,7 +12,6 @@ import DashboardLayout from "../layout/DashboardLayout";
 import Profile from "../pages/authUser/Dashboard/Profile";
 import Order from "../pages/authUser/Dashboard/Order";
 import Address from "../pages/authUser/Dashboard/Address";
-import EditeProfile from "../pages/authUser/Dashboard/EditeProfile";
 import ChangePassword from "../pages/authUser/Dashboard/ChangePassword";
 import PrivecyPolicy from "../pages/authUser/Dashboard/PrivecyPolicy";
 
@@ -73,10 +72,6 @@ export const router = createBrowserRouter([
               {
                 path: "address",
                 element: <Address />,
-              },
-              {
-                path: "settings/edit-profile",
-                element: <EditeProfile />
               },
               {
                 path: "settings/update-password",
