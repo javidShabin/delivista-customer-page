@@ -1,3 +1,4 @@
+
 import mintLeaf from "../assets/images/mint.png";
 import mintLeaf1 from "../assets/images/mint1.png";
 import tomato from "../assets/images/tomato.png";
@@ -11,13 +12,24 @@ import JoinUs from "../components/JoinUs";
 import RestaurantsPage from "./Restaurants";
 import { ArrowDown, Star, Clock, Truck, Utensils } from "lucide-react";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <>
       <section
         className="w-full min-h-screen flex flex-col justify-center items-center relative bg-cover bg-center overflow-hidden"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
+        {/* Enhanced Background Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-transparent"></div>
+        
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-yellow-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        {/* Floating Decorations */}
         {/* Enhanced Background Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-transparent"></div>
         
@@ -73,6 +85,7 @@ const Home = () => {
           />
         </div>
 
+        {/* Main Content */}
         {/* Main Content with Enhanced Animations */}
         <div className="container flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 lg:px-12 w-11/12 h-auto sm:h-[80vh] relative z-10">
           {/* Enhanced Text Section */}
@@ -95,11 +108,9 @@ const Home = () => {
               <br />
               <span className="text-white">Bite,</span>
             </h1>
-            
             <h2 className="text-[#ffa100] text-2xl sm:text-3xl md:text-5xl lg:text-[70px] font-black mt-4 leading-tight animate-slide-in-left delay-300">
               Delivered Right
             </h2>
-            
             {/* Enhanced Subtitle */}
             <p className="text-[#e0e0e0] mt-3 text-sm sm:text-base lg:text-lg tracking-wide animate-fade-in delay-500">
               Experience the finest culinary delights delivered to your doorstep
@@ -109,9 +120,8 @@ const Home = () => {
             <p className="text-[#ffa100] mt-2 text-sm sm:text-base font-semibold animate-fade-in delay-700">
               www.zippyzag.com
             </p>
-
-            {/* Enhanced CTA Button */}
-            <button className="group py-3 sm:py-4 px-8 bg-gradient-to-r from-[#ffa100] to-orange-500 text-white font-bold rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 mt-6 text-sm sm:text-base transform hover:scale-105 hover:-translate-y-1 animate-fade-in delay-1000">
+             {/* Enhanced CTA Button */}
+             <button className="group py-3 sm:py-4 px-8 bg-gradient-to-r from-[#ffa100] to-orange-500 text-white font-bold rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 mt-6 text-sm sm:text-base transform hover:scale-105 hover:-translate-y-1 animate-fade-in delay-1000">
               <span className="flex items-center gap-2">
                 Explore Menu
                 <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
@@ -135,7 +145,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Enhanced Banner Image with Animations */}
+          {/* Banner Image */}
           <div className="mt-6 md:mt-0 flex justify-center animate-fade-in-right delay-500">
             <div className="relative group">
               {/* Glow Effect */}
@@ -165,7 +175,7 @@ const Home = () => {
       </section>
 
       <AboutPage />
-      <JoinUs/>
+      <JoinUs />
       <RestaurantsPage />
 
       {/* Enhanced CSS Animations */}
