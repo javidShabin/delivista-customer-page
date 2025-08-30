@@ -25,6 +25,10 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [addressSelected, isAddressSelected] = useState(false)
   const [addressId, setAddressId] = useState("")
+  const [sellerId, setSellerId] = useState("")
+
+  console.log(sellerId, "===")
+
 
   useEffect(()=>{setTotalPrice},[])
 
@@ -69,8 +73,9 @@ const CartPage = () => {
     const fetchCartDetails = async () => {
       try {
         const response = await getAllCart();
-        const { totalPrice, items } = response.data;
+        const { totalPrice, items, sellerId } = response.data;
         setCartItems(items);
+        setSellerId(sellerId)
         setTotalPrice(totalPrice);
       } catch (error) {
         console.error("Failed to fetch cart:", error);
@@ -151,7 +156,7 @@ const CartPage = () => {
   
       const resposne = await axiosInstance.post('/pyment/make-payment',
         {
-          addressId:addressId, totalAmount:totalPrice, items: cartItems
+          addressId:addressId, totalAmount:totalPrice, items: cartItems, sellerId:sellerId
         }
       )
       if (resposne.data.success) {
