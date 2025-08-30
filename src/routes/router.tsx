@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
         element: <LoginForm />,
       },
 
-      // Loggin-in user
+      // Loggin-in user route
       {
         path: "user",
         element: <AuthUser />,
