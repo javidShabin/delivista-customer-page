@@ -3,8 +3,10 @@ import googleBadge from "../assets/images/google-play-badge.png";
 import appleBadge from "../assets/images/apple-store-badge.png";
 
 const Footer = () => {
+  const dashbordPath = location.pathname.startsWith("/user/dashboard");
+  const hideHeader = dashbordPath ? "hidden" : "bg-[#1a1a1a] text-white pt-10 pb-6 px-4 md:px-12";
   return (
-    <footer className="bg-[#1a1a1a] text-white pt-10 pb-6 px-4 md:px-12">
+    <footer className={`${hideHeader}`}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div>

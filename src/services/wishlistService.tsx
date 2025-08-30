@@ -6,5 +6,5 @@ export const addToWishlist = (menuId: string) =>
 
 // Get list from wishlist
 export const getFavorites = () => {
-  axiosInstance.get("/wishlist/get-list")
+  return axiosInstance.get("/wishlist/get-list")
 }
