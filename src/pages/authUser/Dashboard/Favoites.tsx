@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
-import { getFavorites, removeFavitem } from "../../../services/wishlistService"
-import { Star, Leaf, Ban, Trash2 } from "lucide-react"
+import { clearAllList, getFavorites, removeFavitem } from "../../../services/wishlistService"
+import { Star, Leaf, Ban, Trash2, Trash } from "lucide-react"
 import toast from "react-hot-toast"
 
 const Favorites = () => {
   const [favItems, setFavItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [showConfirm, setShowConfirm] = useState(false)
 
   useEffect(() => {
     const getFavList = async () => {
@@ -25,13 +26,26 @@ const Favorites = () => {
     try {
       const response = await removeFavitem(menuId)
       toast.success(response.data.message)
-  
+
       // remove the item locally
       setFavItems((prev) => prev.filter((item) => item.menuId !== menuId))
     } catch (error) {
       console.log(error)
       toast.error("Failed to remove item")
     }
+  }
+
+  // Clear All (empty for now)
+  const handleClearAll = async () => {
+    try {
+      const response = await clearAllList()
+      toast.success(response.data.message, { icon: "🗑️" })
+      setShowConfirm(false)
+      setFavItems(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   if (loading) {
@@ -52,9 +66,19 @@ const Favorites = () => {
   }
 
   return (
-    <div className="p-4 bg-white min-h-screen">
-      <h1 className="text-xl font-bold text-orange-600 mb-6">My Wishlist</h1>
+    <div className="p-4 bg-white min-h-screen relative">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-xl font-bold text-orange-600">My Wishlist</h1>
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="flex items-center gap-1 text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition shadow-sm"
+        >
+          <Trash size={16} /> Clear All
+        </button>
+      </div>
 
+      {/* Wishlist Grid */}
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {favItems.map((item) => (
           <div
@@ -70,7 +94,9 @@ const Favorites = () => {
               />
               <button
                 className="absolute top-2 right-2 bg-white/90 hover:bg-red-500 hover:text-white text-red-600 p-1.5 rounded-full shadow-md transition"
-                onClick={() => {handleRemove(item.menuId)}}
+                onClick={() => {
+                  handleRemove(item.menuId)
+                }}
               >
                 <Trash2 size={14} />
               </button>
@@ -116,6 +142,34 @@ const Favorites = () => {
           </div>
         ))}
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+              Clear all favorites?
+            </h2>
+            <p className="text-sm text-gray-500 mb-4">
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleClearAll}
+                className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

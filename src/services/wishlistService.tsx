@@ -11,8 +11,12 @@ export const getFavorites = () => {
 
 // Remove item from wishlist
 export const removeFavitem = (menuId: any) => {
-  console.log(menuId)
   return axiosInstance.delete('/wishlist/remove', {
     data: { menuId },
   })
+}
+
+// Clear all list from wishlist
+export const clearAllList = () => {
+  return axiosInstance.delete('/wishlist/clear-all')
 }
