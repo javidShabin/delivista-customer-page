@@ -16,6 +16,8 @@ import ChangePassword from "../pages/authUser/Dashboard/ChangePassword";
 import PrivecyPolicy from "../pages/authUser/Dashboard/PrivecyPolicy";
 import OrderStatusPage from "../pages/authUser/Dashboard/OrderStatus";
 import Favoites from "../pages/authUser/Dashboard/Favoites";
+import { SuccessPage } from "../pages/authUser/successPage";
+import { CancelPage } from "../pages/authUser/cancelPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
           {
             path: "cart",
             element: <CartPage />,
+          },
+          {
+            path: "payment-success",
+            element: <SuccessPage />
+          },
+          {
+            path: "payment-failed",
+            element: <CancelPage />
           },
           {
             path: "dashboard",
