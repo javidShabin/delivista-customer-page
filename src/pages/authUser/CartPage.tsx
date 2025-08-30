@@ -24,6 +24,7 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [addressSelected, isAddressSelected] = useState(false)
+  const [addressId, setAddressId] = useState("")
 
   const { setCartCount } = useCart();
   setCartCount(cartItems.length);
@@ -50,8 +51,8 @@ const CartPage = () => {
     const getAddressStatus = async () => {
       try {
         const response = await addressStatusAPI()
+        setAddressId(response.data.data?._id)
         const selected = response.data.data.isDefault
-        console.log(selected, "===address status")
         selected ? isAddressSelected(true) : isAddressSelected(false)
       } catch (error) {
         console.log(error)
@@ -142,6 +143,19 @@ const CartPage = () => {
       console.error("Error deleting item:", error);
     }
   };
+
+  const handleChekout = async () => {
+    try {
+      const resposne = await axiosInstance.post('/pyment/make-payment',
+        {
+          addressId:addressId, totalAmount:totalPrice, items: cartItems
+        }
+      )
+      console.log(resposne)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] px-4 md:px-8 py-10">
@@ -257,6 +271,7 @@ const CartPage = () => {
                     <span>Total Price:</span>
                     <span className="text-green-600 font-bold text-lg">
                       ₹{finalTotal.toFixed(2)}
+                      
                     </span>
                   </p>
                 </div>
@@ -265,7 +280,7 @@ const CartPage = () => {
 
             {
 
-              addressSelected ? <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
+              addressSelected ? <button onClick={handleChekout} className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
                 Proceed to Checkout
               </button> : <Link to={"/user/dashboard/address"}> <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
                 Select address
