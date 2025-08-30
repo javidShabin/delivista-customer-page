@@ -59,26 +59,22 @@ export default function SignupForm() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 flex items-center justify-center p-4">
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-        </div>
+      <div className="min-h-[100vh] bg-white mt-4 flex items-center justify-center">
+        
 
         <div className="relative z-10 w-full max-w-lg">
+        
+          {/* Signup Form */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 px-5 py-2">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
+          <div className="text-center mt-8">
+            <h1 className="text-1xl font-bold text-gray-800 mb-2">Create Account</h1>
             <p className="text-gray-600">Join us and start your delicious journey</p>
           </div>
-
-          {/* Signup Form */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               {/* Name Field */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Full Name
                 </label>
                 <div className="relative">
@@ -368,7 +364,7 @@ export default function SignupForm() {
           </div>
 
           {/* Footer */}
-          <div className="text-center mt-6">
+          <div className="text-center mt-2">
             <p className="text-xs text-gray-500">
               By creating an account, you agree to our{" "}
               <a href="#" className="text-orange-600 hover:underline">Terms of Service</a>{" "}
