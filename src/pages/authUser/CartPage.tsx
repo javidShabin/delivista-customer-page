@@ -26,6 +26,8 @@ const CartPage = () => {
   const [addressSelected, isAddressSelected] = useState(false)
   const [addressId, setAddressId] = useState("")
 
+  useEffect(()=>{setTotalPrice},[])
+
   const { setCartCount } = useCart();
   setCartCount(cartItems.length);
 
@@ -33,7 +35,7 @@ const CartPage = () => {
  useEffect(() => {
   const removeCart = async () => {
     try {
-      if (!loading && cartItems.length === 0) {   // ✅ run only after fetch
+      if (!loading && cartItems.length === 0) { 
         const response = await axiosInstance.delete("/cart/remove-cart");
         console.log(response);
       }
@@ -146,12 +148,17 @@ const CartPage = () => {
 
   const handleChekout = async () => {
     try {
+  
       const resposne = await axiosInstance.post('/pyment/make-payment',
         {
           addressId:addressId, totalAmount:totalPrice, items: cartItems
         }
       )
-      console.log(resposne)
+      if (resposne.data.success) {
+        window.location.href = resposne.data.url; // Redirect to Stripe Checkout
+      } else {
+        alert("Payment session creation failed");
+      }
     } catch (error) {
       console.log(error)
     }
@@ -240,6 +247,7 @@ const CartPage = () => {
               const taxRate = 0.05;
               const taxAmount = totalPrice * taxRate;
               const finalTotal = totalPrice + taxAmount;
+              
 
               return (
                 <div className="space-y-3 text-gray-700 text-sm">
