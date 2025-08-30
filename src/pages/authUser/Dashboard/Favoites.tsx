@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { getFavorites } from "../../../services/wishlistService"
+import { getFavorites, removeFavitem } from "../../../services/wishlistService"
 import { Star, Leaf, Ban, Trash2 } from "lucide-react"
+import toast from "react-hot-toast"
 
 const Favorites = () => {
   const [favItems, setFavItems] = useState<any[]>([])
@@ -18,7 +19,20 @@ const Favorites = () => {
       }
     }
     getFavList()
-  }, [])
+  }, [setFavItems])
+
+  const handleRemove = async (menuId: any) => {
+    try {
+      const response = await removeFavitem(menuId)
+      toast.success(response.data.message)
+  
+      // remove the item locally
+      setFavItems((prev) => prev.filter((item) => item.menuId !== menuId))
+    } catch (error) {
+      console.log(error)
+      toast.error("Failed to remove item")
+    }
+  }
 
   if (loading) {
     return (
@@ -56,7 +70,7 @@ const Favorites = () => {
               />
               <button
                 className="absolute top-2 right-2 bg-white/90 hover:bg-red-500 hover:text-white text-red-600 p-1.5 rounded-full shadow-md transition"
-                onClick={() => console.log("Remove fav:", item._id)}
+                onClick={() => {handleRemove(item.menuId)}}
               >
                 <Trash2 size={14} />
               </button>
