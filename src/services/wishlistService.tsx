@@ -8,3 +8,8 @@ export const addToWishlist = (menuId: string) =>
 export const getFavorites = () => {
   return axiosInstance.get("/wishlist/get-list")
 }
+
+// Remove item from wishlist
+export const removeFavitem = (menuId: string) => {
+  axiosInstance.delete('/wishlist/remove', )
+}
