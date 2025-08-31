@@ -185,7 +185,7 @@ const OrderItems = ({ items }: { items: OrderItem[] }) => (
   </div>
 );
 
-const OrderSummarySidebar = ({ order }: { order: Order }) => (
+const OrderSummarySidebar = ({ order, onCancel }: { order: Order; onCancel: () => void }) => (
   <div className="space-y-6">
     {/* Price Summary */}
     <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
@@ -215,14 +215,17 @@ const OrderSummarySidebar = ({ order }: { order: Order }) => (
 
     {/* Actions */}
     <div className="space-y-3">
-      <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all">
-        <Truck className="w-4 h-4" /> Track Order
-      </button>
       <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">
         <Download className="w-4 h-4" /> Download Receipt
       </button>
       <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">
         <Headset className="w-4 h-4" /> Contact Support
+      </button>
+      <button
+        onClick={onCancel}
+        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all"
+      >
+        <XCircle className="w-4 h-4" /> Cancel Order
       </button>
     </div>
   </div>
@@ -280,6 +283,10 @@ export const SingleOrder = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleCancelOrder = () => {
+    console.log("Cancel order clicked"); // empty function
+  };
+
   useEffect(() => {
     const fetchOrder = async () => {
       if (!orderId) return;
@@ -333,7 +340,7 @@ export const SingleOrder = () => {
                 <OrderTimeline currentStatus={order.orderStatus} />
               </div>
               {/* Right side */}
-              <OrderSummarySidebar order={order} />
+              <OrderSummarySidebar order={order} onCancel={handleCancelOrder} />
             </div>
           </>
         )}
