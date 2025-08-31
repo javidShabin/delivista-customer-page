@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getOrderById } from "../../services/orderService";
+import { cancelOrder, getOrderById } from "../../services/orderService";
 import {
   ArrowLeft,
   Package,
@@ -283,8 +283,13 @@ export const SingleOrder = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCancelOrder = () => {
-    console.log("Cancel order clicked"); // empty function
+  const handleCancelOrder = async (orderId: any) => {
+    try {
+      const resposne = await cancelOrder(orderId)
+      console.log(resposne)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   useEffect(() => {
@@ -340,7 +345,7 @@ export const SingleOrder = () => {
                 <OrderTimeline currentStatus={order.orderStatus} />
               </div>
               {/* Right side */}
-              <OrderSummarySidebar order={order} onCancel={handleCancelOrder} />
+              <OrderSummarySidebar order={order} onCancel={() => {handleCancelOrder(order._id)}} />
             </div>
           </>
         )}
