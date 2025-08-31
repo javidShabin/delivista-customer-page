@@ -16,7 +16,7 @@ const Address = () => {
     city: '',
     state: '',
     pincode: '',
-    addressType: 'Home',
+    addressType: 'home',
     isDefault: false
   });
 
