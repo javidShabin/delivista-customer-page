@@ -1,23 +1,45 @@
-import { useState } from "react";
-import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, X } from "lucide-react";
 
 export default function RestaurantReview({handleRating}:any) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [review, setReview] = useState("");
 
+  // Auto-close after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleClose();
+    }, 5000);
 
-  const handleCancel = () => {
-    // TODO: add cancel/reset logic here
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleClose = () => {
     setRating(0);
     setReview("");
+    handleRating(-1); // Call the parent function to close the component without submitting rating
+  };
+
+  const handleCancel = () => {
+    setRating(0);
+    setReview("");
+    handleRating(-1); // Close the component without submitting rating
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 bg-gray-900">
       <div className="w-full max-w-md">
         {/* Card with dark theme and orange accents */}
-        <div className="bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden">
+        <div className="bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden relative">
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 backdrop-blur-sm"
+          >
+            <X className="w-5 h-5 text-white" />
+          </button>
+          
           {/* Header with orange gradient accent */}
           <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 p-6 text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3 backdrop-blur-sm">
