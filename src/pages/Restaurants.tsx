@@ -18,6 +18,7 @@ interface Restaurant {
   closeTime: string;
   isVerified: boolean;
   totalReviews: number;
+  ratings: number;
 }
 
 const RestaurantsPage: React.FC = () => {
@@ -32,6 +33,7 @@ const RestaurantsPage: React.FC = () => {
       const response = await axiosInstance.get(
         `/restaurant/verified-restaurants?page=${page}&limit=8`
       );
+      console.log(response.data.verifiedRestaurants.ratings)
       
       setRestDetails(response.data.verifiedRestaurants || []);
       setTotalPages(response.data.totalPages);
@@ -127,7 +129,7 @@ const RestaurantsPage: React.FC = () => {
                         </span>
                         <span className="flex items-center gap-1 text-gray-500">
                           <Star className="w-4 h-4 text-yellow-500" />
-                          {restaurant.totalReviews}
+                          {restaurant.ratings}
                         </span>
                       </div>
                     </div>
