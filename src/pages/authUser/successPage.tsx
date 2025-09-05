@@ -2,37 +2,18 @@ import { CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
-import RestaurantReview from "../../components/authUser/ReviewRating";
 
 export const SuccessPage = () => {
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id");
-  const [sellerId, setSellerId] = useState("");
-  const [showReview, setShowReview] = useState(true);
-  console.log(sellerId);
-
-  const handleRating = async (rating:number) => {
-    console.log(rating, "===rating")
-    if (rating > 0) {
-      try {
-        const response = await axiosInstance.put("/restaurant/review", {
-          sellerId,
-          rating,
-        });
-        console.log(response, "===res")
-      } catch (error) {}
-    }
-    // Hide the review component for both rating submission and close button click
-    setShowReview(false);
-  };
 
   useEffect(() => {
     const verifyPyment = async () => {
       try {
-        const response = await axiosInstance.post(
+        await axiosInstance.post(
           `/pyment/verify-payment?session_id=${session_id}`
         );
-        setSellerId(response.data.order.sellerId);
+
       } catch (error) {
         console.log(error);
       }
@@ -57,7 +38,7 @@ export const SuccessPage = () => {
 
   return (
     <>
-      {!showReview && (
+      
         <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200 p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 text-center flex flex-col items-center">
             <CheckCircle className="text-green-500 w-20 h-20 mb-6 animate-bounce" />
@@ -79,13 +60,8 @@ export const SuccessPage = () => {
             </div>
           </div>
         </div>
-      )}
+    
 
-     {showReview && (
-       <div className="w-full absolute top-0 left-0">
-           <RestaurantReview handleRating={handleRating} />
-       </div>
-     )}
     </>
   );
 };

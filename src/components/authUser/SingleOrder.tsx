@@ -14,6 +14,7 @@ import {
   Download,
   Headset,
 } from "lucide-react";
+import { ReviewRating } from "./ReviewRating";
 
 // ---------- Types ----------
 interface OrderItem {
@@ -282,11 +283,12 @@ export const SingleOrder = () => {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
 
   const handleCancelOrder = async (orderId: any) => {
     try {
       const resposne = await cancelOrder(orderId)
-      console.log(resposne)
+      console.log(resposne, "====order status")
     } catch (error) {
       console.log(error)
     }
@@ -298,6 +300,7 @@ export const SingleOrder = () => {
       try {
         setLoading(true);
         const response = await getOrderById(orderId);
+        console.log(response, "====order details")
         setOrder(response.data.data);
       } catch (err) {
         setError("Failed to fetch order details");
@@ -307,6 +310,12 @@ export const SingleOrder = () => {
     };
     fetchOrder();
   }, [orderId]);
+
+  useEffect(() => {
+    if (order?.orderStatus === "delivered") {
+      setIsReviewOpen(true);
+    }
+  }, [order]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30 p-4 sm:p-6 lg:p-8">
@@ -347,6 +356,12 @@ export const SingleOrder = () => {
               {/* Right side */}
               <OrderSummarySidebar order={order} onCancel={() => {handleCancelOrder(order._id)}} />
             </div>
+
+            <ReviewRating
+              isOpen={isReviewOpen}
+              onClose={() => setIsReviewOpen(false)}
+              orderItems={order.items}
+            />
           </>
         )}
       </div>

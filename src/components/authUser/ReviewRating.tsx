@@ -1,129 +1,181 @@
-import { useState, useEffect } from "react";
-import { Star, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-export default function RestaurantReview({handleRating}:any) {
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [review, setReview] = useState("");
+type OrderItem = {
+  name: string;
+  quantity: number;
+  price: number;
+  image?: string;
+};
 
-  // Auto-close after 5 seconds
+interface ReviewRatingProps {
+  isOpen: boolean;
+  onClose: () => void;
+  orderItems: OrderItem[];
+  restaurantName?: string;
+}
+
+const Star = ({ filled }: { filled: boolean }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill={filled ? "#f59e0b" : "none"}
+    stroke={filled ? "#f59e0b" : "#d1d5db"}
+    className="w-7 h-7 cursor-pointer transition-transform hover:scale-110"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      d="M11.48 3.499a.75.75 0 0 1 1.04 0l2.26 2.26a.75.75 0 0 0 .424.213l3.19.463a.75.75 0 0 1 .416 1.279l-2.307 2.25a.75.75 0 0 0-.216.664l.544 3.17a.75.75 0 0 1-1.088.791l-2.847-1.496a.75.75 0 0 0-.698 0l-2.847 1.496a.75.75 0 0 1-1.088-.79l.544-3.171a.75.75 0 0 0-.216-.664L5.19 7.714a.75.75 0 0 1 .416-1.279l3.19-.463a.75.75 0 0 0 .424-.213l2.26-2.26Z"
+    />
+  </svg>
+);
+
+export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantName }: ReviewRatingProps) => {
+  const [restaurantRating, setRestaurantRating] = useState<number>(0);
+  const [restaurantHover, setRestaurantHover] = useState<number>(0);
+  const [restaurantReview, setRestaurantReview] = useState<string>("");
+
+  console.log(restaurantName, "restaurantName")
+
+  console.log(orderItems, "orderItems")
+
+  const [itemRatings, setItemRatings] = useState<Record<number, number>>({});
+  const [itemHover, setItemHover] = useState<Record<number, number>>({});
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose();
-    }, 5000);
+    if (isOpen) {
+      setRestaurantRating(0);
+      setRestaurantHover(0);
+      setRestaurantReview("");
+      setItemRatings({});
+      setItemHover({});
+    }
+  }, [isOpen]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  const allItemsRated = useMemo(() => {
+    if (!orderItems?.length) return true;
+    return orderItems.every((_, idx) => (itemRatings[idx] ?? 0) > 0);
+  }, [orderItems, itemRatings]);
 
-  const handleClose = () => {
-    setRating(0);
-    setReview("");
-    handleRating(-1); // Call the parent function to close the component without submitting rating
+  // Empty functions as requested (no API integration yet)
+  const submitRestaurantReview = async (
+    rating: any,
+    review: any
+  ): Promise<void> => {
+    console.log(review)
+    return rating
   };
 
-  const handleCancel = () => {
-    setRating(0);
-    setReview("");
-    handleRating(-1); // Close the component without submitting rating
+  const submitItemRatings = async (
+    ratings: Array<{ index: number; rating: number }>
+  ): Promise<void> => {
+    return; ratings
   };
+
+  const handleSubmit = async () => {
+    await submitRestaurantReview(restaurantRating, restaurantReview);
+    const ratingsArray = Object.entries(itemRatings).map(([index, rating]) => ({ index: Number(index), rating }));
+    await submitItemRatings(ratingsArray);
+    onClose();
+  };
+
+  if (!isOpen) return null;
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-900">
-      <div className="w-full max-w-md">
-        {/* Card with dark theme and orange accents */}
-        <div className="bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden relative">
-          {/* Close button */}
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 backdrop-blur-sm"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-          
-          {/* Header with orange gradient accent */}
-          <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 p-6 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3 backdrop-blur-sm">
-              <Star className="w-6 h-6 text-white fill-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Rate Your Experience
-            </h1>
-            <p className="text-white/80 text-sm">
-              Help others discover great food
-            </p>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" onClick={onClose} />
 
-          {/* Content area */}
-          <div className="p-6 space-y-6">
-            {/* Star Rating - Minimalist style */}
-            <div className="text-center">
-              <p className="text-gray-300 text-sm mb-4 font-medium">How was your meal?</p>
-              <div className="flex justify-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    onClick={() => setRating(star)}
-                    onMouseEnter={() => setHover(star)}
-                    onMouseLeave={() => setHover(0)}
-                    className="p-2 rounded-lg transition-all duration-200 hover:bg-gray-700"
-                  >
-                    <Star
-                      size={32}
-                      className={`transition-all duration-200 ${
-                        star <= (hover || rating)
-                          ? "fill-orange-400 text-orange-400"
-                          : "text-gray-500 hover:text-gray-400"
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-              {rating > 0 && (
-                <p className="text-sm text-gray-400 mt-2">
-                  {rating === 1 && "Poor"}
-                  {rating === 2 && "Fair"}
-                  {rating === 3 && "Good"}
-                  {rating === 4 && "Very Good"}
-                  {rating === 5 && "Excellent"}
-                </p>
-              )}
-            </div>
+      <div className="relative w-full sm:max-w-2xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl p-6 sm:p-7 animate-in slide-in-from-bottom duration-200">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full p-2 bg-slate-100 hover:bg-slate-200 text-slate-600"
+          aria-label="Close"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
 
-            {/* Review Textarea - Clean and minimal */}
-            <div>
-              <label className="block text-gray-300 text-sm font-medium mb-2">
-                Tell us more (optional)
-              </label>
-              <textarea
-                value={review}
-                onChange={(e) => setReview(e.target.value)}
-                placeholder="Share details about the food, service, or atmosphere..."
-                className="w-full min-h-[100px] resize-none rounded-lg bg-gray-700 border border-gray-600 p-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-              />
-            </div>
-
-            {/* Action Buttons - Modern flat design */}
-            <div className="flex gap-3 pt-2">
-              <button
-                onClick={handleCancel}
-                className="flex-1 py-3 px-4 rounded-lg border border-gray-600 text-gray-300 font-medium hover:bg-gray-700 hover:border-gray-500 transition-all duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {handleRating(rating)}}
-                className="flex-1 py-3 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:from-orange-600 hover:to-amber-600 transition-all duration-200 shadow-lg"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
+        <div className="mb-6">
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{restaurantName || "Restaurant Review"}</h3>
+          <p className="text-slate-500 text-sm">Share your experience to help others</p>
         </div>
 
-        {/* Decorative elements */}
-        <div className="absolute top-10 left-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-xl"></div>
+        <div className="space-y-8">
+          <section className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
+            <h4 className="font-semibold text-slate-800 mb-3">Overall Restaurant Rating</h4>
+            <div className="flex items-center gap-2 mb-3">
+              {[1, 2, 3, 4, 5].map((value) => (
+                <div
+                  key={value}
+                  onMouseEnter={() => setRestaurantHover(value)}
+                  onMouseLeave={() => setRestaurantHover(0)}
+                  onClick={() => setRestaurantRating(value)}
+                >
+                  <Star filled={value <= (restaurantHover || restaurantRating)} />
+                </div>
+              ))}
+              <span className="ml-2 text-sm text-slate-600">{restaurantRating > 0 ? `${restaurantRating}/5` : "Tap to rate"}</span>
+            </div>
+            <textarea
+              value={restaurantReview}
+              onChange={(e) => setRestaurantReview(e.target.value)}
+              placeholder="Write a short review (optional)"
+              className="w-full min-h-[90px] rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent p-3 text-sm text-slate-800 placeholder:text-slate-400 bg-white"
+            />
+          </section>
+
+          <section className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
+            <h4 className="font-semibold text-slate-800 mb-4">Rate Food Items</h4>
+            <div className="space-y-4 max-h-60 overflow-auto pr-1">
+              {orderItems?.map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between gap-3 bg-white rounded-lg p-3 border border-slate-200">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img src={item.image || "/placeholder-food.png"} className="w-10 h-10 rounded-md object-cover" />
+                    <div className="truncate">
+                      <p className="text-slate-800 font-medium truncate">{item.name}</p>
+                      <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <div
+                        key={value}
+                        onMouseEnter={() => setItemHover((prev) => ({ ...prev, [idx]: value }))}
+                        onMouseLeave={() => setItemHover((prev) => ({ ...prev, [idx]: 0 }))}
+                        onClick={() => setItemRatings((prev) => ({ ...prev, [idx]: value }))}
+                      >
+                        <Star filled={value <= ((itemHover[idx] ?? 0) || (itemRatings[idx] ?? 0))} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-end">
+          <button
+            onClick={onClose}
+            className="px-5 py-3 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+          >
+            Close
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={restaurantRating === 0 || !allItemsRated}
+            className="px-5 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            Submit Review
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default ReviewRating;
+
+
