@@ -32,6 +32,7 @@ interface Order {
   totalAmount: number;
   deliveryFee?: number;
   tax?: number;
+  sellerId: string;
   paymentMethod?: string;
 }
 
@@ -285,6 +286,7 @@ export const SingleOrder = () => {
   const [error, setError] = useState<string | null>(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
 
+
   const handleCancelOrder = async (orderId: any) => {
     try {
       const resposne = await cancelOrder(orderId)
@@ -361,6 +363,8 @@ export const SingleOrder = () => {
               isOpen={isReviewOpen}
               onClose={() => setIsReviewOpen(false)}
               orderItems={order.items}
+              sellerId={order.sellerId}
+              orderId={order._id}
             />
           </>
         )}

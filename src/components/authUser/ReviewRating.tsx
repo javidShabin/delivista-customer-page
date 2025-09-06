@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { submitRestaurantReview as submitReviewAPI } from "../../services/reviewService";
 
 type OrderItem = {
   name: string;
@@ -11,7 +12,9 @@ interface ReviewRatingProps {
   isOpen: boolean;
   onClose: () => void;
   orderItems: OrderItem[];
-  restaurantName?: string;
+  restaurantId?: string;
+  sellerId?: string;
+  orderId?: string;
 }
 
 const Star = ({ filled }: { filled: boolean }) => (
@@ -31,12 +34,13 @@ const Star = ({ filled }: { filled: boolean }) => (
   </svg>
 );
 
-export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantName }: ReviewRatingProps) => {
+export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, sellerId, orderId }: ReviewRatingProps) => {
   const [restaurantRating, setRestaurantRating] = useState<number>(0);
   const [restaurantHover, setRestaurantHover] = useState<number>(0);
   const [restaurantReview, setRestaurantReview] = useState<string>("");
 
-  console.log(restaurantName, "restaurantName")
+  console.log(restaurantId, "restaurantName")
+  console.log(sellerId, "seler id")
 
   console.log(orderItems, "orderItems")
 
@@ -58,13 +62,32 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantName }: Re
     return orderItems.every((_, idx) => (itemRatings[idx] ?? 0) > 0);
   }, [orderItems, itemRatings]);
 
-  // Empty functions as requested (no API integration yet)
   const submitRestaurantReview = async (
     rating: any,
     review: any
   ): Promise<void> => {
-    console.log(review)
-    return rating
+    try {
+      if (!sellerId || !orderId) {
+        console.error("Missing required data: sellerId or orderId");
+        return;
+      }
+
+      // For now, we'll use the first menu item's ID as menuItemId
+      // In a real implementation, you might want to handle multiple menu items differently
+      const menuItemId = orderItems[0]?.name || "default"; // Using name as a placeholder for menuItemId
+      
+      const response = await submitReviewAPI({
+        sellerId,
+        menuItemId,
+        orderId,
+        rating,
+        review
+      });
+      
+      console.log("Review submitted successfully:", response);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
   };
 
   const submitItemRatings = async (
@@ -98,7 +121,7 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantName }: Re
         </button>
 
         <div className="mb-6">
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{restaurantName || "Restaurant Review"}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{restaurantId || "Restaurant Review"}</h3>
           <p className="text-slate-500 text-sm">Share your experience to help others</p>
         </div>
 
