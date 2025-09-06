@@ -32,6 +32,7 @@ interface Order {
   totalAmount: number;
   deliveryFee?: number;
   tax?: number;
+  isReviewed: boolean;
   sellerId: string;
   paymentMethod?: string;
 }
@@ -285,12 +286,12 @@ export const SingleOrder = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
-
+console.log(order)
 
   const handleCancelOrder = async (orderId: any) => {
     try {
-      const resposne = await cancelOrder(orderId)
-      console.log(resposne, "====order status")
+      await cancelOrder(orderId)
+      
     } catch (error) {
       console.log(error)
     }
@@ -302,7 +303,7 @@ export const SingleOrder = () => {
       try {
         setLoading(true);
         const response = await getOrderById(orderId);
-        console.log(response, "====order details")
+      
         setOrder(response.data.data);
       } catch (err) {
         setError("Failed to fetch order details");
@@ -316,6 +317,8 @@ export const SingleOrder = () => {
   useEffect(() => {
     if (order?.orderStatus === "delivered") {
       setIsReviewOpen(true);
+    }if (order?.isReviewed === true) {
+      setIsReviewOpen(false);
     }
   }, [order]);
 

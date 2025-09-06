@@ -39,10 +39,6 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, seller
   const [restaurantHover, setRestaurantHover] = useState<number>(0);
   const [restaurantReview, setRestaurantReview] = useState<string>("");
 
-  console.log(restaurantId, "restaurantName")
-  console.log(sellerId, "seler id")
-
-  console.log(orderItems, "orderItems")
 
   const [itemRatings, setItemRatings] = useState<Record<number, number>>({});
   const [itemHover, setItemHover] = useState<Record<number, number>>({});
