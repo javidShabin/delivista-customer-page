@@ -4,10 +4,12 @@ import { MapPin, Phone, CheckCircle} from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { axiosInstance } from "../config/axiosInstance";
 import Menu from "../components/authUser/menu";
+import { getAllRatings } from "../services/restaurantService";
 
 type Restaurant = {
   name: string;
   image: string;
+  sellerId: string;
   address: string;
   phone: string;
   cuisine?: string[];
@@ -22,6 +24,7 @@ type Restaurant = {
 const SingleRestaurant: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [sellerId, setSellerId] = useState<any | null>(null)
 
   useEffect(() => {
     const fetchRestaurant = async () => {
@@ -29,6 +32,7 @@ const SingleRestaurant: React.FC = () => {
         const response = await axiosInstance.get(
           `/restaurant/restaurant-byId/${id}`
         );
+        setSellerId(response.data?.sellerId)
         setRestaurant(response.data);
       } catch (error) {
         console.error("Failed to fetch restaurant:", error);
@@ -37,6 +41,21 @@ const SingleRestaurant: React.FC = () => {
 
     if (id) fetchRestaurant();
   }, [id]);
+
+  useEffect(() => {
+    const getAllReviews = async () => {
+      try {
+        const response = await getAllRatings(sellerId)
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    if (sellerId) {
+      getAllReviews();
+    }
+  }, [sellerId])
 
   if (!restaurant) {
     return (
