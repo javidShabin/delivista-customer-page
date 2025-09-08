@@ -19,7 +19,6 @@ export const SingleOrder = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
-console.log(order)
 
   const handleCancelOrder = async (orderId: any) => {
     try {

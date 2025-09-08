@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { submitRestaurantReview as submitReviewAPI } from "../../services/reviewService";
 
 type OrderItem = {
@@ -39,24 +39,17 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, seller
   const [restaurantHover, setRestaurantHover] = useState<number>(0);
   const [restaurantReview, setRestaurantReview] = useState<string>("");
 
-
-  const [itemRatings, setItemRatings] = useState<Record<number, number>>({});
-  const [itemHover, setItemHover] = useState<Record<number, number>>({});
+  
 
   useEffect(() => {
     if (isOpen) {
       setRestaurantRating(0);
       setRestaurantHover(0);
       setRestaurantReview("");
-      setItemRatings({});
-      setItemHover({});
     }
   }, [isOpen]);
 
-  const allItemsRated = useMemo(() => {
-    if (!orderItems?.length) return true;
-    return orderItems.every((_, idx) => (itemRatings[idx] ?? 0) > 0);
-  }, [orderItems, itemRatings]);
+  
 
   const submitRestaurantReview = async (
     rating: any,
@@ -86,16 +79,8 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, seller
     }
   };
 
-  const submitItemRatings = async (
-    ratings: Array<{ index: number; rating: number }>
-  ): Promise<void> => {
-    return; ratings
-  };
-
   const handleSubmit = async () => {
     await submitRestaurantReview(restaurantRating, restaurantReview);
-    const ratingsArray = Object.entries(itemRatings).map(([index, rating]) => ({ index: Number(index), rating }));
-    await submitItemRatings(ratingsArray);
     onClose();
   };
 
@@ -145,34 +130,7 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, seller
             />
           </section>
 
-          <section className="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
-            <h4 className="font-semibold text-slate-800 mb-4">Rate Food Items</h4>
-            <div className="space-y-4 max-h-60 overflow-auto pr-1">
-              {orderItems?.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between gap-3 bg-white rounded-lg p-3 border border-slate-200">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <img src={item.image || "/placeholder-food.png"} className="w-10 h-10 rounded-md object-cover" />
-                    <div className="truncate">
-                      <p className="text-slate-800 font-medium truncate">{item.name}</p>
-                      <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((value) => (
-                      <div
-                        key={value}
-                        onMouseEnter={() => setItemHover((prev) => ({ ...prev, [idx]: value }))}
-                        onMouseLeave={() => setItemHover((prev) => ({ ...prev, [idx]: 0 }))}
-                        onClick={() => setItemRatings((prev) => ({ ...prev, [idx]: value }))}
-                      >
-                        <Star filled={value <= ((itemHover[idx] ?? 0) || (itemRatings[idx] ?? 0))} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          
         </div>
 
         <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-end">
@@ -184,7 +142,7 @@ export const ReviewRating = ({ isOpen, onClose, orderItems, restaurantId, seller
           </button>
           <button
             onClick={handleSubmit}
-            disabled={restaurantRating === 0 || !allItemsRated}
+            disabled={restaurantRating === 0}
             className="px-5 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
             Submit Review
