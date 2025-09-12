@@ -1,8 +1,15 @@
 
+import { useNavigate } from "react-router-dom";
 import joinBanner1 from "../assets/images/joinBanner1.png";
 import joinBanner2 from "../assets/images/joinBanner2.png";
 
 const JoinUs = () => {
+  const navigate = useNavigate();
+
+  const handlePartnerClick = () => {
+    navigate('/restaurant-registration');
+  };
+
   return (
     <section className="w-full flex justify-center bg-[#f8f9fb] items-center min-h-screen sm:min-h-[90vh] px-4">
       <div className="container w-full max-w-6xl">
@@ -64,7 +71,10 @@ const JoinUs = () => {
                   <h3 className="text-white text-2xl font-bold mt-2">
                     Partner With Us
                   </h3>
-                  <button className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/50 transition duration-300">
+                  <button 
+                    onClick={handlePartnerClick}
+                    className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/50 transition duration-300"
+                  >
                     Get Started
                   </button>
                 </div>

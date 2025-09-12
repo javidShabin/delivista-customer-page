@@ -19,6 +19,7 @@ import Favoites from "../pages/authUser/Dashboard/Favoites";
 import { SuccessPage } from "../pages/authUser/successPage";
 import { CancelPage } from "../pages/authUser/cancelPage";
 import { SingleOrder } from "../components/authUser/SingleOrder";
+import RestaurantRegistration from "../pages/RestaurantRegistration";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "login-page",
         element: <LoginForm />,
+      },
+      {
+        path: "restaurant-registration",
+        element: <RestaurantRegistration />,
       },
 
       // Loggin-in user route
