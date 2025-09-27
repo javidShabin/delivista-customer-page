@@ -57,7 +57,6 @@ export default function LoginForm() {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      =
       <div className="relative z-10 w-full max-w-md">
        
         {/* Login Form */}
