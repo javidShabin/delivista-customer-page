@@ -33,6 +33,7 @@ const Profile = () => {
     const getProfileData = async () => {
       try {
         const response = await axiosInstance.get("/user/customer-profile");
+        console.log(response)
         setUserProfile(response.data.customer);
         // Initialize form data with profile data
         if (response.data.customer) {
