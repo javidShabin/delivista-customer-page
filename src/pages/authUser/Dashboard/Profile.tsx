@@ -32,7 +32,7 @@ const Profile = () => {
   useEffect(() => {
     const getProfileData = async () => {
       try {
-        const response = await axiosInstance.get("/user/customer-profile");
+        const response = await axiosInstance.get("/user/user-profile");
         console.log(response)
         setUserProfile(response.data.customer);
         // Initialize form data with profile data
@@ -91,7 +91,7 @@ const Profile = () => {
 
       console.log(formDataToSend)
 
-      const response = await axiosInstance.put("/user/update-customer-profile", formDataToSend, {
+      const response = await axiosInstance.put("/user/update-user-profile", formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
