@@ -8,7 +8,6 @@ import { useCart } from "../../context/CartContext";
 import { addressStatusAPI } from "../../services/addressService";
 import { Link } from "react-router-dom";
 
-
 interface CartItem {
   menuId: string;
   quantity: number;
@@ -23,56 +22,25 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [addressSelected, isAddressSelected] = useState(false)
-  const [addressId, setAddressId] = useState("")
-  const [sellerId, setSellerId] = useState("")
-
-  useEffect(()=>{setTotalPrice},[])
+  const [addressSelected, setAddressSelected] = useState(false);
+  const [addressId, setAddressId] = useState("");
+  const [sellerId, setSellerId] = useState("");
 
   const { setCartCount } = useCart();
-  setCartCount(cartItems.length);
 
- // ********************* Cart item is 0 the call the remove cart API ***************************
- useEffect(() => {
-  const removeCart = async () => {
-    try {
-      if (!loading && cartItems.length === 0) { 
-        const response = await axiosInstance.delete("/cart/remove-cart");
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  removeCart();
-}, [cartItems, loading]);  
-
-  // ******************** Address selected or not cheking function *********************************
-  // ** If not select any address show the select address button else show checkout button **
-
+  // ✅ Update cart count whenever cartItems changes
   useEffect(() => {
-    const getAddressStatus = async () => {
-      try {
-        const response = await addressStatusAPI()
-        setAddressId(response.data.data?._id)
-        const selected = response.data.data.isDefault
-        selected ? isAddressSelected(true) : isAddressSelected(false)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getAddressStatus()
-  }, [])
+    setCartCount(cartItems.length);
+  }, [cartItems, setCartCount]);
 
-  // ********************** End get cart funciton ************************
-
+  // ✅ Fetch cart details on mount
   useEffect(() => {
     const fetchCartDetails = async () => {
       try {
         const response = await getAllCart();
         const { totalPrice, items, sellerId } = response.data;
         setCartItems(items);
-        setSellerId(sellerId)
+        setSellerId(sellerId);
         setTotalPrice(totalPrice);
       } catch (error) {
         console.error("Failed to fetch cart:", error);
@@ -81,51 +49,74 @@ const CartPage = () => {
       }
     };
     fetchCartDetails();
-  }, [cartItems]);
+  }, []);
 
-  const increaseQty = async (menuId: any) => {
+  // ✅ Remove cart if empty
+  useEffect(() => {
+    const removeCart = async () => {
+      try {
+        if (!loading && cartItems.length === 0) {
+          await axiosInstance.delete("/cart/remove-cart");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    removeCart();
+  }, [cartItems, loading]);
+
+  // ✅ Check address selection
+  useEffect(() => {
+    const getAddressStatus = async () => {
+      try {
+        const response = await addressStatusAPI();
+        setAddressId(response.data.data?._id);
+        const selected = response.data.data.isDefault;
+        setAddressSelected(!!selected);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAddressStatus();
+  }, []);
+
+  const increaseQty = async (menuId: string) => {
     try {
       const response = await axiosInstance.put("/cart/update-cart", {
         menuId,
-        action: "increment"
-      })
+        action: "increment",
+      });
 
-      // Update local state after successful API call
       if (response.data.success) {
         const { items, totalPrice } = response.data.cart;
         setCartItems(items);
         setTotalPrice(totalPrice);
         setCartCount(items.length);
       }
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
-  const decreaseQty = async (menuId: any) => {
+  const decreaseQty = async (menuId: string) => {
     try {
       const response = await axiosInstance.put("/cart/update-cart", {
         menuId,
-        action: "decrement"
-      })
+        action: "decrement",
+      });
 
-      // Update local state after successful API call
       if (response.data.success) {
         const { items, totalPrice } = response.data.cart;
         setCartItems(items);
         setTotalPrice(totalPrice);
         setCartCount(items.length);
       }
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
-  // *************** Remove items from cart function ***********************
-  // ***********************************************************************
-  const removeItem = async (menuId: any) => {
+  const removeItem = async (menuId: string) => {
     try {
       const response = await axiosInstance.delete("/cart/remove-item", {
         data: { menuId },
@@ -133,7 +124,6 @@ const CartPage = () => {
 
       toast.success(response.data.message);
 
-      // Update local state based on response
       const { items, totalPrice } = response.data.cart;
       setCartItems(items);
       setTotalPrice(totalPrice);
@@ -147,23 +137,24 @@ const CartPage = () => {
     }
   };
 
-  const handleChekout = async () => {
+  const handleCheckout = async () => {
     try {
-  
-      const resposne = await axiosInstance.post('/pyment/make-payment',
-        {
-          addressId:addressId, totalAmount:totalPrice, items: cartItems, sellerId:sellerId
-        }
-      )
-      if (resposne.data.success) {
-        window.location.href = resposne.data.url; // Redirect to Stripe Checkout
+      const response = await axiosInstance.post("/pyment/make-payment", {
+        addressId: addressId,
+        totalAmount: totalPrice,
+        items: cartItems,
+        sellerId: sellerId,
+      });
+
+      if (response.data.success) {
+        window.location.href = response.data.url; // Stripe Checkout
       } else {
         alert("Payment session creation failed");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] px-4 md:px-8 py-10">
@@ -243,12 +234,10 @@ const CartPage = () => {
               Order Summary
             </h3>
 
-            {/* Tax and total calculation */}
             {(() => {
               const taxRate = 0.05;
               const taxAmount = totalPrice * taxRate;
               const finalTotal = totalPrice + taxAmount;
-              
 
               return (
                 <div className="space-y-3 text-gray-700 text-sm">
@@ -280,23 +269,26 @@ const CartPage = () => {
                     <span>Total Price:</span>
                     <span className="text-green-600 font-bold text-lg">
                       ₹{finalTotal.toFixed(2)}
-                      
                     </span>
                   </p>
                 </div>
               );
             })()}
 
-            {
-
-              addressSelected ? <button onClick={handleChekout} className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
+            {addressSelected ? (
+              <button
+                onClick={handleCheckout}
+                className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition"
+              >
                 Proceed to Checkout
-              </button> : <Link to={"/user/dashboard/address"}> <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
-                Select address
-              </button></Link>
-            }
-
-
+              </button>
+            ) : (
+              <Link to={"/user/dashboard/address"}>
+                <button className="mt-6 w-full bg-gradient-to-r from-black to-gray-800 text-white py-2.5 rounded-full font-medium hover:opacity-90 transition">
+                  Select address
+                </button>
+              </Link>
+            )}
 
             <p className="text-xs text-gray-500 text-center mt-3">
               🔒 Secure & Encrypted Checkout
